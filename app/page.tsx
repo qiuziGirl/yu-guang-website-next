@@ -1,14 +1,11 @@
 "use client";
-import { useState } from "react";
 import Header from "@/components/Header";
 
 export default function Home() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
+
       {/* Hero 区域 */}
       <main className="relative pt-16">
         <div className="max-w-[1200px] mx-auto px-4 pt-20 pb-16 text-center relative z-10">
@@ -16,8 +13,8 @@ export default function Home() {
             The platform for the web.
           </h1>
           <p className="mt-6 text-xl text-gray-500 max-w-2xl mx-auto">
-            Vercel provides the developer tools and cloud infrastructure
-            to build, scale, and secure a faster, more personalized web.
+            Vercel provides the developer tools and cloud infrastructure to
+            build, scale, and secure a faster, more personalized web.
           </p>
           <div className="mt-10 flex justify-center gap-4">
             <button className="px-6 py-3 bg-black text-white rounded-lg flex items-center hover:bg-gray-800">
@@ -41,7 +38,7 @@ export default function Home() {
         <div className="relative z-10 flex justify-center mt-20">
           <div className="w-32 h-32 relative">
             <svg className="w-full h-full" viewBox="0 0 76 65" fill="none">
-              <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="black"/>
+              <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="black" />
             </svg>
           </div>
         </div>
