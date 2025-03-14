@@ -1,5 +1,6 @@
 "use client";
 import Header from "@/components/Header";
+import Carousel from "@/components/Carousel";
 
 export default function Home() {
   return (
@@ -8,6 +9,8 @@ export default function Home() {
 
       {/* Hero 区域 */}
       <main className="relative pt-16">
+        <Carousel />
+
         <div className="max-w-[1200px] mx-auto px-4 pt-20 pb-16 text-center relative z-10">
           <h1 className="text-6xl font-bold text-black mt-16">
             The platform for the web.

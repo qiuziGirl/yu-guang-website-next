@@ -5,21 +5,21 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
-      <nav className="max-w-[1200px] mx-auto px-4 h-16 flex items-center justify-between">
+    <header className="fixed flex justify-center px-2 md:px-8 lg:px-20 top-0 left-0 right-0 bg-white backdrop-blur-md z-50 border-b border-gray-100">
+      <nav className="w-full h-16 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-8">
           <a href="/" className="flex items-center">
             <div className="text-black font-bold flex items-center">
-              <span className="text-lg mr-1">▲</span>
-              <span>Vercel</span>
+              <span className="text-2xl mr-1">▲</span>
+              <span className="text-xl">Vercel</span>
             </div>
           </a>
 
           {/* 桌面端导航菜单 */}
           <div className="hidden md:flex items-center space-x-1">
             <div className="relative group">
-              <button className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-50 flex items-center">
+              <button className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-100 flex items-center">
                 Products
                 <svg
                   className="ml-1 w-4 h-4"
@@ -43,7 +43,7 @@ export default function Header() {
                   <div className="grid gap-4">
                     <a
                       href="#"
-                      className="flex items-start p-3 rounded-lg hover:bg-gray-50"
+                      className="flex items-start p-3 rounded-lg hover:bg-gray-100"
                     >
                       <span className="text-xl">📋</span>
                       <div className="ml-3">
@@ -55,7 +55,7 @@ export default function Header() {
                     </a>
                     <a
                       href="#"
-                      className="flex items-start p-3 rounded-lg hover:bg-gray-50"
+                      className="flex items-start p-3 rounded-lg hover:bg-gray-100"
                     >
                       <span className="text-xl">🤖</span>
                       <div className="ml-3">
@@ -71,27 +71,27 @@ export default function Header() {
             </div>
 
             {/* 其他导航项 */}
-            <button className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-50">
+            <button className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-100">
               Solutions
             </button>
-            <button className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-50">
+            <button className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-100">
               Resources
             </button>
             <a
               href="#"
-              className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-50"
+              className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-100"
             >
               Enterprise
             </a>
             <a
               href="#"
-              className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-50"
+              className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-100"
             >
               Docs
             </a>
             <a
               href="#"
-              className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-50"
+              className="px-3 py-2 rounded-md text-sm text-gray-600 hover:text-black hover:bg-gray-100"
             >
               Pricing
             </a>
@@ -158,50 +158,50 @@ export default function Header() {
         <div className="px-4 pt-2 pb-3 space-y-1 bg-white border-t border-gray-100">
           <a
             href="#"
-            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-50 rounded-md"
+            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-100 rounded-md"
           >
             Products
           </a>
           <a
             href="#"
-            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-50 rounded-md"
+            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-100 rounded-md"
           >
             Solutions
           </a>
           <a
             href="#"
-            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-50 rounded-md"
+            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-100 rounded-md"
           >
             Resources
           </a>
           <a
             href="#"
-            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-50 rounded-md"
+            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-100 rounded-md"
           >
             Enterprise
           </a>
           <a
             href="#"
-            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-50 rounded-md"
+            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-100 rounded-md"
           >
             Docs
           </a>
           <a
             href="#"
-            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-50 rounded-md"
+            className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-100 rounded-md"
           >
             Pricing
           </a>
           <div className="pt-4 border-t border-gray-200">
             <a
               href="#"
-              className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-50 rounded-md"
+              className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-100 rounded-md"
             >
               Log In
             </a>
             <a
               href="#"
-              className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-50 rounded-md"
+              className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-black hover:bg-gray-100 rounded-md"
             >
               Contact
             </a>
