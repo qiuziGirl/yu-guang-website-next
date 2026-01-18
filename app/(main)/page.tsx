@@ -1,14 +1,14 @@
 "use client";
 
 import { CategoryInfo, CarouselInfo } from "@/types/api";
-import {
-  LeftCircleOutlined,
-  RightCircleOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
+import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Button, Carousel, Col, Image, Row } from "antd";
 import { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectFade, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/navigation";
 
 const carouselVideoList = [
   {
@@ -32,24 +32,6 @@ const carouselVideoList = [
       "https://yu-guang-website.oss-ap-southeast-1.aliyuncs.com/videos/WeChat_20230905222556.mp4",
   },
 ];
-
-const contentStyle: React.CSSProperties = {
-  margin: 0,
-  width: "100%",
-  height: "600px",
-  objectFit: "cover",
-};
-
-const settings = {
-  className: "center",
-  infinite: true,
-  dots: false,
-  arrow: true,
-  speed: 500,
-  slidesToShow: 3,
-  centerMode: true,
-  centerPadding: "0px",
-};
 
 export default function HomePage() {
   const router = useRouter();
@@ -93,185 +75,110 @@ export default function HomePage() {
   };
 
   return (
-    <section style={{ backgroundColor: "#f6f6f6" }}>
+    <section className="bg-gray-100">
       {/* 轮播图区域 */}
-      <div style={{ height: "600px", overflow: "hidden" }}>
-        <Carousel autoplay effect="fade" autoplaySpeed={5000}>
+      <div className="h-[600px] overflow-hidden">
+        <Swiper
+          modules={[Autoplay, EffectFade]}
+          effect="fade"
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          loop={true}
+          className="h-full"
+        >
           {carouselList.map((carousel) => (
-            <div key={carousel.id}>
-              <div style={{ height: "600px", position: "relative" }}>
-                <Image
-                  src={carousel.image_url}
-                  preview={false}
-                  height={600}
-                  width="100%"
-                  style={contentStyle}
-                  alt="轮播图"
-                />
-              </div>
-            </div>
+            <SwiperSlide key={carousel.id}>
+              <img
+                src={carousel.image_url}
+                alt="轮播图"
+                className="w-full h-[600px] object-cover"
+              />
+            </SwiperSlide>
           ))}
-        </Carousel>
+        </Swiper>
       </div>
 
       {/* 为您推荐标题 */}
-      <div
-        style={{
-          fontSize: "32px",
-          fontWeight: 600,
-          color: "#333",
-          marginTop: "50px",
-          marginBottom: "40px",
-          lineHeight: "1.2",
-        }}
-      >
+      <h2 className="text-3xl font-semibold text-gray-800 mt-12 mb-10">
         为您推荐
-      </div>
+      </h2>
 
       {/* 产品分类展示区域 */}
-      <div style={{ padding: "0 80px 60px" }}>
-        <Row gutter={[24, 24]}>
+      <div className="px-20 pb-16">
+        <div className="grid grid-cols-12 gap-6">
           {/* 左侧大图展示 */}
-          <Col span={10}>
+          <div className="col-span-5">
             {activeCategory && (
-              <div style={{ backgroundColor: "#fff", height: "100%" }}>
+              <div className="bg-white h-full rounded-lg overflow-hidden shadow-sm">
                 <img
                   src={activeCategory.cover_image_url || ""}
                   alt={activeCategory.name}
-                  style={{
-                    height: "400px",
-                    width: "100%",
-                    objectFit: "cover",
-                  }}
+                  className="h-[400px] w-full object-cover"
                 />
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    padding: "30px",
-                  }}
-                >
-                  <h3
-                    style={{
-                      fontSize: "24px",
-                      color: "#222",
-                      margin: "0 0 15px 0",
-                      fontWeight: 600,
-                    }}
-                  >
+                <div className="flex flex-col items-start p-8">
+                  <h3 className="text-2xl text-gray-800 font-semibold mb-4">
                     {activeCategory.name}
                   </h3>
-                  <div
-                    style={{
-                      color: "#666",
-                      margin: "0 0 20px 0",
-                      fontSize: "14px",
-                      lineHeight: "1.6",
-                    }}
-                  >
+                  <p className="text-gray-600 text-sm leading-relaxed mb-5">
                     {activeCategory.description}
-                  </div>
-                  <Button
-                    type="link"
-                    style={{ padding: 0, fontSize: "14px" }}
+                  </p>
+                  <button
+                    className="flex items-center text-green-500 hover:text-green-600 text-sm font-medium transition-colors"
                     onClick={() => goToCategory(activeCategory.id)}
                   >
                     了解更多
-                    <RightOutlined style={{ fontSize: "12px" }} />
-                  </Button>
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </button>
                 </div>
               </div>
             )}
-          </Col>
+          </div>
 
           {/* 右侧分类卡片网格 */}
-          <Col span={14}>
-            <Row gutter={[16, 16]}>
+          <div className="col-span-7">
+            <div className="grid grid-cols-3 gap-4">
               {categoryList.map((category) => (
-                <Col span={8} key={category.id}>
-                  <div
-                    style={{
-                      backgroundColor: "#fff",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      textAlign: "center",
-                      overflow: "hidden",
-                      transition: "all 0.3s ease",
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                    className="category-card"
-                    onClick={() => changeActiveCategory(category)}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "translateY(-5px)";
-                      e.currentTarget.style.boxShadow = "0 8px 16px rgba(0,0,0,0.1)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: "16px",
-                        lineHeight: "1.4",
-                        padding: "20px 15px",
-                        fontWeight: 600,
-                        color: "#333",
-                      }}
-                    >
-                      {category.name}
-                    </div>
-                    <div style={{ flex: 1, overflow: "hidden" }}>
-                      <img
-                        src={category.cover_image_url || ""}
-                        alt={category.name}
-                        style={{
-                          width: "100%",
-                          height: "180px",
-                          objectFit: "cover",
-                          transition: "transform 0.3s ease",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = "scale(1.05)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = "scale(1)";
-                        }}
-                      />
-                    </div>
+                <div
+                  key={category.id}
+                  className="bg-white rounded-lg cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  onClick={() => changeActiveCategory(category)}
+                >
+                  <div className="text-base font-semibold text-gray-800 py-5 px-4">
+                    {category.name}
                   </div>
-                </Col>
+                  <div className="overflow-hidden">
+                    <img
+                      src={category.cover_image_url || ""}
+                      alt={category.name}
+                      className="w-full h-[180px] object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
+                </div>
               ))}
-            </Row>
-          </Col>
-        </Row>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* 视频展示区域 */}
-      <div style={{ padding: "60px 80px 80px" }}>
-        <Carousel
-          {...settings}
-          prevArrow={<LeftCircleOutlined />}
-          nextArrow={<RightCircleOutlined style={{ color: "#ccc" }} />}
-          arrows={true}
+      <div className="px-20 py-16">
+        <Swiper
+          modules={[Navigation]}
+          slidesPerView={3}
+          spaceBetween={20}
+          navigation={true}
+          loop={true}
+          className="video-swiper"
         >
           {carouselVideoList.map((item, index) => (
-            <div key={index}>
-              <div className="block-item">
-                <video
-                  src={item.videoUrl}
-                  controls
-                  width="100%"
-                  height={500}
-                  style={{ backgroundColor: "#000" }}
-                />
-              </div>
-            </div>
+            <SwiperSlide key={index}>
+              <video
+                src={item.videoUrl}
+                controls
+                className="w-full h-[400px] bg-black rounded-lg"
+              />
+            </SwiperSlide>
           ))}
-        </Carousel>
+        </Swiper>
       </div>
     </section>
   );

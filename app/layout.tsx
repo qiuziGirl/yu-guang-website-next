@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { ConfigProvider } from "antd";
-import zhCN from "antd/locale/zh_CN";
 import MainLayout from "@/components/MainLayout";
 import "./globals.css";
 
@@ -18,11 +15,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body>
-        <AntdRegistry>
-          <ConfigProvider locale={zhCN}>
-            <MainLayout>{children}</MainLayout>
-          </ConfigProvider>
-        </AntdRegistry>
+        <MainLayout>{children}</MainLayout>
       </body>
     </html>
   );

@@ -2,7 +2,6 @@
 
 import { GoodsInfo } from "@/types/api";
 import { useParams, useRouter } from "next/navigation";
-import { Col, Row, Skeleton } from "antd";
 import { useEffect, useState } from "react";
 
 const EMPTY_IMAGE_URL =
@@ -10,6 +9,22 @@ const EMPTY_IMAGE_URL =
 
 interface GoodsWithImage extends GoodsInfo {
   imageUrl: string;
+}
+
+function Skeleton() {
+  return (
+    <div className="grid grid-cols-3 gap-6 max-w-[1400px] w-full">
+      {[1, 2, 3, 4, 5, 6].map((i) => (
+        <div key={i} className="bg-white rounded-lg overflow-hidden shadow-sm animate-pulse">
+          <div className="h-[280px] bg-gray-200" />
+          <div className="p-6">
+            <div className="h-5 bg-gray-200 rounded w-3/4 mb-3" />
+            <div className="h-4 bg-gray-200 rounded w-1/2" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default function CategoryPage() {
@@ -53,101 +68,39 @@ export default function CategoryPage() {
 
   if (loading) {
     return (
-      <section style={{ padding: "20px 150px 50px 150px" }}>
-        <Skeleton active />
+      <section className="flex justify-center px-24 py-10 bg-gray-100 min-h-[calc(100vh-200px)]">
+        <Skeleton />
       </section>
     );
   }
 
   return (
-    <section
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        padding: "40px 100px 60px",
-        backgroundColor: "#f6f6f6",
-        minHeight: "calc(100vh - 200px)",
-      }}
-    >
-      <Row gutter={[24, 24]} style={{ width: "100%", maxWidth: "1400px" }}>
-        {goodsList.map((goods, index) => (
-          <Col span={8} key={index}>
-            <div
-              style={{
-                height: "100%",
-                backgroundColor: "#fff",
-                borderRadius: "8px",
-                padding: "0",
-                cursor: "pointer",
-                overflow: "hidden",
-                transition: "all 0.3s ease",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)",
-              }}
-              onClick={() => goToGoods(goods.id)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-5px)";
-                e.currentTarget.style.boxShadow = "0 8px 16px rgba(0, 0, 0, 0.12)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.06)";
-              }}
-            >
-              <div style={{ 
-                width: "100%", 
-                height: "280px", 
-                overflow: "hidden",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#fafafa"
-              }}>
-                <img
-                  src={goods.imageUrl}
-                  style={{ 
-                    width: "100%", 
-                    height: "100%", 
-                    objectFit: "cover",
-                    transition: "transform 0.3s ease"
-                  }}
-                  alt={goods.name}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "scale(1.05)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "scale(1)";
-                  }}
-                />
+    <section className="flex justify-center px-24 py-10 bg-gray-100 min-h-[calc(100vh-200px)]">
+      <div className="grid grid-cols-3 gap-6 max-w-[1400px] w-full">
+        {goodsList.map((goods) => (
+          <div
+            key={goods.id}
+            className="bg-white rounded-lg cursor-pointer overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+            onClick={() => goToGoods(goods.id)}
+          >
+            <div className="w-full h-[280px] overflow-hidden bg-gray-50 flex items-center justify-center">
+              <img
+                src={goods.imageUrl}
+                className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                alt={goods.name}
+              />
+            </div>
+            <div className="p-6 text-left">
+              <div className="text-gray-800 font-semibold text-lg mb-2 leading-snug">
+                {goods.name}
               </div>
-              <div
-                style={{
-                  padding: "24px 20px",
-                  textAlign: "left",
-                }}
-              >
-                <div
-                  style={{
-                    color: "#333",
-                    fontWeight: "600",
-                    fontSize: "18px",
-                    marginBottom: "8px",
-                    lineHeight: "1.4",
-                  }}
-                >
-                  {goods.name}
-                </div>
-                <div style={{ 
-                  color: "#666", 
-                  fontSize: "14px",
-                  lineHeight: "1.5"
-                }}>
-                  {goods.english_name}
-                </div>
+              <div className="text-gray-500 text-sm leading-relaxed">
+                {goods.english_name}
               </div>
             </div>
-          </Col>
+          </div>
         ))}
-      </Row>
+      </div>
     </section>
   );
 }

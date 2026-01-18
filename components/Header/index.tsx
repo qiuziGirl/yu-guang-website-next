@@ -3,21 +3,8 @@
 import { CategoryInfo, GoodsInfo } from "@/types/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Dropdown } from "antd";
-import type { MenuProps } from "antd";
+import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
-
-const languageMenu: MenuProps["items"] = [
-  {
-    key: "1",
-    label: "中文",
-  },
-  {
-    key: "2",
-    label: "English",
-    disabled: true,
-  },
-];
 
 interface CategoryWithGoods extends CategoryInfo {
   goodsList?: GoodsInfo[];
@@ -26,6 +13,7 @@ interface CategoryWithGoods extends CategoryInfo {
 export default function HeaderComponent() {
   const router = useRouter();
   const [categoryList, setCategoryList] = useState<CategoryWithGoods[]>([]);
+  const [langOpen, setLangOpen] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -44,92 +32,60 @@ export default function HeaderComponent() {
 
   return (
     <>
+      {/* Logo */}
       <div
-        style={{
-          fontSize: "20px",
-          fontWeight: 600,
-          color: "#52c41a",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-        }}
+        className="flex items-center text-xl font-semibold text-green-500 cursor-pointer"
         onClick={() => router.push("/")}
       >
         <img
           src="https://yu-guang-website.oss-ap-southeast-1.aliyuncs.com/static/logo_128x128.png"
-          style={{ width: "36px", height: "36px", marginRight: "10px" }}
+          className="w-9 h-9 mr-2.5"
           alt="余光照明"
         />
         余光照明
       </div>
-      <div style={{ display: "flex", fontSize: "15px", fontWeight: 400, alignItems: "center", gap: "40px" }}>
-        {categoryList.map((category) => {
-          const menuItemList: MenuProps["items"] = category.goodsList?.map(
-            (goods) => ({
-              key: goods.id,
-              label: (
-                <Link href={`/goods/${goods.id}`}>
-                  {goods.name}
-                </Link>
-              ),
-            })
-          ) || [];
 
-          if (menuItemList.length === 0) {
-            return (
-              <Link
-                key={category.id}
-                href={`/category/${category.id}`}
-                style={{ 
-                  cursor: "pointer", 
-                  color: "#333",
-                  textDecoration: "none"
-                }}
-                className="header-link"
-              >
-                {category.name}
-              </Link>
-            );
-          }
-
-          return (
-            <Dropdown key={category.id} menu={{ items: menuItemList }}>
-              <Link
-                href={`/category/${category.id}`}
-                style={{ 
-                  cursor: "pointer", 
-                  color: "#333",
-                  textDecoration: "none"
-                }}
-                className="header-link"
-              >
-                {category.name}
-              </Link>
-            </Dropdown>
-          );
-        })}
-        <Link 
-          href="/about" 
-          style={{ 
-            color: "#333",
-            textDecoration: "none"
-          }}
-          className="header-link"
+      {/* Navigation */}
+      <nav className="flex items-center gap-10 text-[15px]">
+        {categoryList.map((category) => (
+          <Link
+            key={category.id}
+            href={`/category/${category.id}`}
+            className="text-gray-700 hover:text-green-500 transition-colors duration-300"
+          >
+            {category.name}
+          </Link>
+        ))}
+        
+        <Link
+          href="/about"
+          className="text-gray-700 hover:text-green-500 transition-colors duration-300"
         >
           关于余光
         </Link>
-        <Dropdown menu={{ items: languageMenu }} arrow>
-          <div 
-            style={{ 
-              cursor: "pointer",
-              color: "#333"
-            }}
-            className="header-link"
-          >
+
+        {/* Language Dropdown */}
+        <div 
+          className="relative"
+          onMouseEnter={() => setLangOpen(true)}
+          onMouseLeave={() => setLangOpen(false)}
+        >
+          <button className="flex items-center gap-1 text-gray-700 hover:text-green-500 transition-colors duration-300">
             中文
-          </div>
-        </Dropdown>
-      </div>
+            <ChevronDown className="w-4 h-4" />
+          </button>
+          {langOpen && (
+            <div className="absolute top-full right-0 mt-1 bg-white rounded-md shadow-lg border border-gray-100 py-1 min-w-[100px] z-50">
+              <div className="px-4 py-2 text-gray-700 hover:bg-gray-50 cursor-pointer">
+                中文
+              </div>
+              <div className="px-4 py-2 text-gray-400 cursor-not-allowed">
+                English
+              </div>
+            </div>
+          )}
+        </div>
+      </nav>
     </>
   );
 }
