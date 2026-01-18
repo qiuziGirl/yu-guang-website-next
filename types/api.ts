@@ -1,54 +1,65 @@
 export interface CategoryInfo {
   id: number;
   name: string;
-  english_name: string;
+  englishName: string;
   description: string | null;
-  english_description: string | null;
-  cover_image_url: string | null;
+  englishDescription: string | null;
+  coverImageUrl: string | null;
   sort: number | null;
   status: number | null;
-  created_at: string | null;
-  updated_at: string | null;
-  deleted_at: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+  deletedAt: string | null;
 }
 
 export interface GoodsInfo {
   id: number;
   name: string;
-  english_name: string;
+  englishName: string;
   description: string | null;
-  english_description: string | null;
-  image_list_url: string | null;
+  englishDescription: string | null;
+  imageListUrl: string | null;
   price: string | null;
-  category_id: number;
+  categoryId: number;
   introduction: string | null;
   status: number | null;
-  created_at: string | null;
-  updated_at: string | null;
-  deleted_at: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+  deletedAt: string | null;
 }
 
 export interface CarouselInfo {
   id: number;
-  image_url: string;
+  imageUrl: string;
   sort: number | null;
   status: number | null;
   remark: string | null;
-  created_at: string | null;
-  updated_at: string | null;
-  deleted_at: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+  deletedAt: string | null;
 }
 
 export interface IntroductionInfo {
   id: number;
-  rich_text: string | null;
+  richText: string | null;
   version: number | null;
   status: number | null;
-  created_at: string | null;
-  updated_at: string | null;
-  deleted_at: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+  deletedAt: string | null;
 }
 
 export interface CategoryWithGoods extends CategoryInfo {
   goodsList: GoodsInfo[];
+}
+
+export interface ApiResponse<T> {
+  code: number;
+  message: string;
+  data: T;
+}
+
+export interface ListData<T> {
+  total: number;
+  list: T[];
 }

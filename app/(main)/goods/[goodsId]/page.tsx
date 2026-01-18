@@ -98,10 +98,10 @@ export default function GoodsPage() {
         const res = await fetch(`/api/v1/goods/${goodsId}`);
         const data = await res.json();
 
-        if (data.success && data.data) {
+        if (data.code === 0 && data.data) {
           const imageUrlList =
-            data.data.image_list_url && data.data.image_list_url.trim()
-              ? data.data.image_list_url
+            data.data.imageListUrl && data.data.imageListUrl.trim()
+              ? data.data.imageListUrl
                   .split(",")
                   .filter((url: string) => url.trim())
               : [];
@@ -186,16 +186,16 @@ export default function GoodsPage() {
             {goods.name}
           </h1>
           <h2 className="text-xl text-gray-500 font-medium mb-6">
-            {goods.english_name}
+            {goods.englishName}
           </h2>
           {goods.description && (
             <p className="text-gray-600 text-base leading-relaxed mt-5">
               {goods.description}
             </p>
           )}
-          {goods.english_description && (
+          {goods.englishDescription && (
             <p className="text-gray-500 text-[15px] leading-relaxed mt-3">
-              {goods.english_description}
+              {goods.englishDescription}
             </p>
           )}
         </div>

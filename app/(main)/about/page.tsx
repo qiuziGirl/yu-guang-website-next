@@ -26,8 +26,8 @@ export default function AboutPage() {
         const res = await fetch("/api/v1/introduction");
         const data = await res.json();
 
-        if (data.success && data.data) {
-          setRichText(data.data.rich_text || "");
+        if (data.code === 0 && data.data) {
+          setRichText(data.data.richText || "");
         }
       } catch (error) {
         console.error("获取公司介绍失败:", error);

@@ -50,13 +50,13 @@ export default function HomePage() {
         const categoryData = await categoryRes.json();
         const carouselData = await carouselRes.json();
 
-        if (categoryData.success && categoryData.data.length > 0) {
-          setCategoryList(categoryData.data);
-          setActiveCategory(categoryData.data[0]);
+        if (categoryData.code === 0 && categoryData.data.list.length > 0) {
+          setCategoryList(categoryData.data.list);
+          setActiveCategory(categoryData.data.list[0]);
         }
 
-        if (carouselData.success) {
-          setCarouselList(carouselData.data);
+        if (carouselData.code === 0) {
+          setCarouselList(carouselData.data.list);
         }
       } catch (error) {
         console.error("获取数据失败:", error);
@@ -88,7 +88,7 @@ export default function HomePage() {
           {carouselList.map((carousel) => (
             <SwiperSlide key={carousel.id}>
               <img
-                src={carousel.image_url}
+                src={carousel.imageUrl}
                 alt="轮播图"
                 className="w-full h-[600px] object-cover"
               />
@@ -110,7 +110,7 @@ export default function HomePage() {
             {activeCategory && (
               <div className="bg-white h-full rounded-lg overflow-hidden shadow-sm">
                 <img
-                  src={activeCategory.cover_image_url || ""}
+                  src={activeCategory.coverImageUrl || ""}
                   alt={activeCategory.name}
                   className="h-[400px] w-full object-cover"
                 />
@@ -147,7 +147,7 @@ export default function HomePage() {
                   </div>
                   <div className="overflow-hidden">
                     <img
-                      src={category.cover_image_url || ""}
+                      src={category.coverImageUrl || ""}
                       alt={category.name}
                       className="w-full h-[180px] object-cover transition-transform duration-300 hover:scale-105"
                     />

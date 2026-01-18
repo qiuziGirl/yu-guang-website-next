@@ -40,11 +40,11 @@ export default function CategoryPage() {
         const res = await fetch(`/api/v1/goods?categoryId=${categoryId}`);
         const data = await res.json();
 
-        if (data.success) {
-          const list = data.data.map((item: GoodsInfo) => {
+        if (data.code === 0) {
+          const list = data.data.list.map((item: GoodsInfo) => {
             const imageUrl =
-              item.image_list_url && item.image_list_url.trim()
-                ? item.image_list_url.split(",")[0]
+              item.imageListUrl && item.imageListUrl.trim()
+                ? item.imageListUrl.split(",")[0]
                 : EMPTY_IMAGE_URL;
             return { ...item, imageUrl };
           });
@@ -95,7 +95,7 @@ export default function CategoryPage() {
                 {goods.name}
               </div>
               <div className="text-gray-500 text-sm leading-relaxed">
-                {goods.english_name}
+                {goods.englishName}
               </div>
             </div>
           </div>

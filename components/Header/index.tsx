@@ -20,8 +20,12 @@ export default function HeaderComponent() {
       try {
         const res = await fetch("/api/v1/category");
         const data = await res.json();
-        if (data.success) {
-          setCategoryList(data.data);
+        if (data.code === 0) {
+          const filteredCategories = data.data.list.filter(
+            (category: CategoryWithGoods) => 
+              category.goodsList && category.goodsList.length > 0
+          );
+          setCategoryList(filteredCategories);
         }
       } catch (error) {
         console.error("获取分类失败:", error);
