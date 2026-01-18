@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model admin {
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt
+  name            String    @db.Char(20)
+  password        String    @default("123456") @db.Char(50)
+  mobile          String?   @db.VarChar(50)
+  email           String?   @db.VarChar(50)
+  open_id         String?   @db.VarChar(255)
+  role            String?   @default("editor") @db.Char(20)
+  created_at      DateTime? @db.DateTime(0)
+  updated_at      DateTime? @db.DateTime(0)
+  last_login_time DateTime? @db.DateTime(0)
+  is_logined      Int?      @default(0)
+  deleted_at      DateTime? @db.DateTime(0)
+  avatar          String?   @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model carousel {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  image_url  String    @db.VarChar(255)
+  sort       Int?
+  status     Int?
+  remark     String?   @db.VarChar(255)
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model category {
+  id                  Int       @id @default(autoincrement()) @db.UnsignedInt
+  name                String    @db.Char(20)
+  english_name        String    @db.Char(70)
+  description         String?   @db.VarChar(255)
+  english_description String?   @db.VarChar(255)
+  cover_image_url     String?   @db.VarChar(255)
+  sort                Int?      @default(0)
+  status              Int?      @default(1)
+  created_at          DateTime? @db.DateTime(0)
+  updated_at          DateTime? @db.DateTime(0)
+  deleted_at          DateTime? @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model goods {
+  id                  Int       @id @default(autoincrement()) @db.UnsignedInt
+  name                String    @db.VarChar(50)
+  english_name        String    @db.VarChar(255)
+  description         String?   @db.VarChar(255)
+  english_description String?   @db.VarChar(255)
+  image_list_url      String?   @db.Text
+  price               Decimal?  @db.Decimal(10, 2)
+  category_id         Int
+  introduction        String?   @db.Text
+  status              Int?      @default(1)
+  created_at          DateTime? @db.DateTime(0)
+  updated_at          DateTime? @db.DateTime(0)
+  deleted_at          DateTime? @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model introduction {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  rich_text  String?   @db.Text
+  version    Int?
+  status     Int?
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+}

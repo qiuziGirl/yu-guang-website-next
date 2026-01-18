@@ -5,22 +5,67 @@
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.page-footer {
+  padding: 18px 0;
+}
+
+.page-footer .link-text {
+  padding-left: 3px;
+  color: #fff;
+}
+
+.page-footer .link-text:hover {
+  color: #1890ff;
+  cursor: pointer;
+}
+
+.hvr-grow {
+  transition: transform 0.3s ease;
+}
+
+.hvr-grow:hover {
+  transform: scale(1.05);
+}
+
+.block-item {
+  padding: 0 10px;
+}
+
+.header-link {
+  transition: color 0.3s ease;
+}
+
+.header-link:hover {
+  color: #52c41a !important;
+}
+
+.category-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Ant Design Carousel 样式优化 */
+.ant-carousel .slick-dots {
+  bottom: 20px;
+}
+
+.ant-carousel .slick-dots li button {
+  background: rgba(255, 255, 255, 0.5);
+  height: 4px;
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+  background: #fff;
+  width: 24px;
 }
