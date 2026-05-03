@@ -5,12 +5,6 @@
   --foreground: #171717;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -53,6 +47,36 @@ body {
 
 .category-card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Swiper 导航按钮样式 */
+.video-swiper .swiper-button-next,
+.video-swiper .swiper-button-prev {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.video-swiper .swiper-button-next:after,
+.video-swiper .swiper-button-prev:after {
+  font-size: 20px;
+}
+
+.video-swiper .swiper-button-next:hover,
+.video-swiper .swiper-button-prev:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Swiper 分页器样式 */
+.swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  background: #fff;
 }
 
 /* Ant Design Carousel 样式优化 */

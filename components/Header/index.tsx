@@ -50,7 +50,7 @@ export default function HeaderComponent() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex items-center gap-10 text-[15px]">
+      <nav className="flex items-center gap-14 text-lg font-semibold">
         {categoryList.map((category) => (
           <Link
             key={category.id}

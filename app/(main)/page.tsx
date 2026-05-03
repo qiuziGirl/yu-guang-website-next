@@ -5,10 +5,11 @@ import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade, Navigation } from "swiper/modules";
+import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const carouselVideoList = [
   {
@@ -77,20 +78,21 @@ export default function HomePage() {
   return (
     <section className="bg-gray-100">
       {/* 轮播图区域 */}
-      <div className="h-[600px] overflow-hidden">
+      <div className="h-[450px] overflow-hidden">
         <Swiper
-          modules={[Autoplay, EffectFade]}
+          modules={[Autoplay, EffectFade, Pagination]}
           effect="fade"
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           loop={true}
-          className="h-full"
+          pagination={{ clickable: true }}
+          className="h-full hero-swiper"
         >
           {carouselList.map((carousel) => (
             <SwiperSlide key={carousel.id}>
               <img
                 src={carousel.imageUrl}
                 alt="轮播图"
-                className="w-full h-[600px] object-cover"
+                className="w-full h-[450px] object-cover"
               />
             </SwiperSlide>
           ))}
@@ -103,26 +105,26 @@ export default function HomePage() {
       </h2>
 
       {/* 产品分类展示区域 */}
-      <div className="px-20 pb-16">
-        <div className="grid grid-cols-12 gap-6">
+      <div className="px-10 pb-16 max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-12 gap-8">
           {/* 左侧大图展示 */}
           <div className="col-span-5">
             {activeCategory && (
-              <div className="bg-white h-full rounded-lg overflow-hidden shadow-sm">
+              <div className="bg-white h-full overflow-hidden shadow-sm">
                 <img
                   src={activeCategory.coverImageUrl || ""}
                   alt={activeCategory.name}
-                  className="h-[400px] w-full object-cover"
+                  className="h-[450px] w-full object-cover"
                 />
                 <div className="flex flex-col items-start p-8">
-                  <h3 className="text-2xl text-gray-800 font-semibold mb-4">
+                  <h3 className="text-xl text-gray-800 font-semibold mb-3">
                     {activeCategory.name}
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed mb-5">
                     {activeCategory.description}
                   </p>
                   <button
-                    className="flex items-center text-green-500 hover:text-green-600 text-sm font-medium transition-colors"
+                    className="flex items-center text-blue-500 hover:text-blue-600 text-sm font-medium transition-colors"
                     onClick={() => goToCategory(activeCategory.id)}
                   >
                     了解更多
@@ -133,23 +135,23 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* 右侧分类卡片网格 */}
+          {/* 右侧分类卡片网格 - 2x2布局，只显示前4个 */}
           <div className="col-span-7">
-            <div className="grid grid-cols-3 gap-4">
-              {categoryList.map((category) => (
+            <div className="grid grid-cols-2 gap-5">
+              {categoryList.slice(0, 4).map((category) => (
                 <div
                   key={category.id}
-                  className="bg-white rounded-lg cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  className="bg-white cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm"
                   onClick={() => changeActiveCategory(category)}
                 >
-                  <div className="text-base font-semibold text-gray-800 py-5 px-4">
+                  <div className="text-base font-semibold text-gray-800 py-4 px-5 text-center">
                     {category.name}
                   </div>
-                  <div className="overflow-hidden">
+                  <div className="overflow-hidden flex items-center justify-center bg-gray-50 p-4">
                     <img
                       src={category.coverImageUrl || ""}
                       alt={category.name}
-                      className="w-full h-[180px] object-cover transition-transform duration-300 hover:scale-105"
+                      className="w-full h-[200px] object-contain transition-transform duration-300 hover:scale-105"
                     />
                   </div>
                 </div>
@@ -160,11 +162,11 @@ export default function HomePage() {
       </div>
 
       {/* 视频展示区域 */}
-      <div className="px-20 py-16">
+      <div className="px-10 py-16 max-w-[1400px] mx-auto">
         <Swiper
           modules={[Navigation]}
           slidesPerView={3}
-          spaceBetween={20}
+          spaceBetween={30}
           navigation={true}
           loop={true}
           className="video-swiper"
@@ -174,7 +176,7 @@ export default function HomePage() {
               <video
                 src={item.videoUrl}
                 controls
-                className="w-full h-[400px] bg-black rounded-lg"
+                className="w-full h-[350px] bg-black"
               />
             </SwiperSlide>
           ))}
