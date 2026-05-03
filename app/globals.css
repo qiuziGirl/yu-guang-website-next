@@ -25,30 +25,6 @@ body {
   cursor: pointer;
 }
 
-.hvr-grow {
-  transition: transform 0.3s ease;
-}
-
-.hvr-grow:hover {
-  transform: scale(1.05);
-}
-
-.block-item {
-  padding: 0 10px;
-}
-
-.header-link {
-  transition: color 0.3s ease;
-}
-
-.header-link:hover {
-  color: #52c41a !important;
-}
-
-.category-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
 /* Swiper 导航按钮样式 */
 .video-swiper .swiper-button-next,
 .video-swiper .swiper-button-prev {
@@ -77,19 +53,4 @@ body {
 
 .swiper-pagination-bullet-active {
   background: #fff;
-}
-
-/* Ant Design Carousel 样式优化 */
-.ant-carousel .slick-dots {
-  bottom: 20px;
-}
-
-.ant-carousel .slick-dots li button {
-  background: rgba(255, 255, 255, 0.5);
-  height: 4px;
-}
-
-.ant-carousel .slick-dots li.slick-active button {
-  background: #fff;
-  width: 24px;
 }
