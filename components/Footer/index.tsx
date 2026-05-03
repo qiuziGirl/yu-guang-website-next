@@ -1,6 +1,6 @@
 "use client";
 
-import { Instagram, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
@@ -46,7 +46,21 @@ export default function FooterComponent() {
         <span className="text-sm">Contact US</span>
 
         <TooltipIcon
-          icon={<Instagram className="w-4 h-4" />}
+          icon={
+            <svg
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <circle cx="12" cy="12" r="5" />
+              <path d="M16.5 7.5h.01" />
+            </svg>
+          }
           imageUrl="https://yu-guang-website.oss-ap-southeast-1.aliyuncs.com/static/yuGuang_instagram.jpg"
           alt="Instagram"
         />
