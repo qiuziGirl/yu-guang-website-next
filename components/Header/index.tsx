@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { CategoryInfo } from "@/types/api";
 import LangDropdown from "./LangDropdown";
@@ -14,10 +15,13 @@ export default function HeaderComponent({ categories }: HeaderProps) {
         href="/"
         className="flex items-center text-xl font-semibold text-green-500"
       >
-        <img
+        <Image
           src="https://yu-guang-website.oss-ap-southeast-1.aliyuncs.com/static/logo_128x128.png"
-          className="w-9 h-9 mr-2.5"
+          width={36}
+          height={36}
+          className="mr-2.5"
           alt="余光照明"
+          priority
         />
         余光照明
       </Link>

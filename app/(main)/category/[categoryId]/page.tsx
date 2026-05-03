@@ -1,4 +1,5 @@
 import { getGoodsByCategoryId } from "@/lib/data";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -30,13 +31,15 @@ export default async function CategoryPage({ params }: PageProps) {
             <Link
               key={goods.id}
               href={`/goods/${goods.id}`}
-              className="bg-white rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              className="bg-white rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group"
             >
-              <div className="w-full h-[280px] overflow-hidden bg-gray-50 flex items-center justify-center">
-                <img
+              <div className="relative w-full h-[280px] overflow-hidden bg-gray-50">
+                <Image
                   src={imageUrl}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                   alt={goods.name}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="p-6 text-left">

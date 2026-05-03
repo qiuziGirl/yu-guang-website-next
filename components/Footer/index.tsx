@@ -1,6 +1,7 @@
 "use client";
 
 import { Instagram, MessageCircle } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -23,7 +24,13 @@ function TooltipIcon({ icon, imageUrl, alt }: TooltipIconProps) {
       {icon}
       {show && (
         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 p-2 bg-[#b5c5d3] rounded-lg shadow-lg z-50">
-          <img src={imageUrl} alt={alt} className="w-[200px] rounded" />
+          <Image
+            src={imageUrl}
+            alt={alt}
+            width={200}
+            height={200}
+            className="rounded"
+          />
         </div>
       )}
     </div>

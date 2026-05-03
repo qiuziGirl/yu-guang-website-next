@@ -2,6 +2,7 @@
 
 import { CategoryInfo, CarouselInfo } from "@/types/api";
 import { ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -64,13 +65,18 @@ export default function HomeContent({
           pagination={{ clickable: true }}
           className="h-full hero-swiper"
         >
-          {carouselList.map((carousel) => (
+          {carouselList.map((carousel, index) => (
             <SwiperSlide key={carousel.id}>
-              <img
-                src={carousel.imageUrl}
-                alt="轮播图"
-                className="w-full h-[490px] object-cover"
-              />
+              <div className="relative w-full h-[490px]">
+                <Image
+                  src={carousel.imageUrl}
+                  alt="轮播图"
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                  priority={index === 0}
+                />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -88,11 +94,17 @@ export default function HomeContent({
           <div className="col-span-5">
             {activeCategory && (
               <div className="bg-white h-full overflow-hidden shadow-sm rounded-2xl">
-                <img
-                  src={activeCategory.coverImageUrl || ""}
-                  alt={activeCategory.name}
-                  className="h-[450px] w-full object-cover"
-                />
+                {activeCategory.coverImageUrl && (
+                  <div className="relative h-[450px] w-full">
+                    <Image
+                      src={activeCategory.coverImageUrl}
+                      alt={activeCategory.name}
+                      fill
+                      sizes="(min-width: 1400px) 560px, 40vw"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
                 <div className="flex flex-col items-start p-8">
                   <h3 className="text-xl text-gray-800 font-semibold mb-3">
                     {activeCategory.name}
@@ -118,18 +130,24 @@ export default function HomeContent({
               {categoryList.slice(0, 4).map((category) => (
                 <div
                   key={category.id}
-                  className="bg-white cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm rounded-2xl"
+                  className="bg-white cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm rounded-2xl group"
                   onClick={() => setActiveCategory(category)}
                 >
                   <div className="text-base font-semibold text-gray-800 py-4 px-5 text-center">
                     {category.name}
                   </div>
                   <div className="overflow-hidden flex items-center justify-center bg-gray-50 p-4">
-                    <img
-                      src={category.coverImageUrl || ""}
-                      alt={category.name}
-                      className="w-full h-[200px] object-contain transition-transform duration-300 hover:scale-105"
-                    />
+                    {category.coverImageUrl && (
+                      <div className="relative w-full h-[200px]">
+                        <Image
+                          src={category.coverImageUrl}
+                          alt={category.name}
+                          fill
+                          sizes="(min-width: 1400px) 380px, 30vw"
+                          className="object-contain transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

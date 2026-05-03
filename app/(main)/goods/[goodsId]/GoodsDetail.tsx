@@ -2,6 +2,7 @@
 
 import { GoodsInfo } from "@/types/api";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
 const EMPTY_IMAGE_URL =
@@ -60,12 +61,19 @@ function ImagePreview({
         </>
       )}
 
-      <img
-        src={images[currentIndex]}
-        alt="预览图"
-        className="max-w-[90vw] max-h-[90vh] object-contain"
+      <div
+        className="relative w-[90vw] h-[90vh]"
         onClick={(e) => e.stopPropagation()}
-      />
+      >
+        <Image
+          src={images[currentIndex]}
+          alt="预览图"
+          fill
+          sizes="90vw"
+          className="object-contain"
+          priority
+        />
+      </div>
 
       <div className="absolute bottom-4 text-white text-sm">
         {currentIndex + 1} / {images.length}
@@ -100,26 +108,40 @@ export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
       {/* 商品信息头部 */}
       <div className="flex gap-12 px-24 py-12 bg-white mb-8 text-left">
         <div className="w-1/3">
-          <img
-            src={mainImage}
-            alt={goods.name}
-            className="max-h-[400px] w-full object-contain rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+          <div
+            className="relative w-full h-[400px] cursor-pointer hover:opacity-90 transition-opacity"
             onClick={() => openPreview(0)}
-          />
+          >
+            <Image
+              src={mainImage}
+              alt={goods.name}
+              fill
+              sizes="(min-width: 1024px) 33vw, 100vw"
+              className="object-contain rounded-lg"
+              priority
+            />
+          </div>
           {imageUrlList.length > 1 && (
             <div className="flex gap-2 mt-4 overflow-x-auto">
               {imageUrlList.map((url, index) => (
-                <img
+                <button
                   key={index}
-                  src={url}
-                  alt={`${goods.name} ${index + 1}`}
-                  className={`w-16 h-16 object-cover rounded cursor-pointer transition-all ${
+                  type="button"
+                  onClick={() => openPreview(index)}
+                  className={`relative w-16 h-16 shrink-0 rounded overflow-hidden cursor-pointer transition-all ${
                     index === 0
                       ? "ring-2 ring-green-500"
                       : "hover:ring-2 hover:ring-gray-300"
                   }`}
-                  onClick={() => openPreview(index)}
-                />
+                >
+                  <Image
+                    src={url}
+                    alt={`${goods.name} ${index + 1}`}
+                    fill
+                    sizes="64px"
+                    className="object-cover"
+                  />
+                </button>
               ))}
             </div>
           )}
