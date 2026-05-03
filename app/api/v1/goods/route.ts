@@ -1,15 +1,6 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-
-// 将下划线命名转换为驼峰命名
-function toCamelCase(obj: Record<string, unknown>): Record<string, unknown> {
-  const result: Record<string, unknown> = {};
-  for (const key in obj) {
-    const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
-    result[camelKey] = obj[key];
-  }
-  return result;
-}
+import { toCamelCase } from "@/lib/utils";
 
 // GET /api/v1/goods - 获取商品列表
 export async function GET(request: NextRequest) {
@@ -33,7 +24,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    const goodsList = goods.map((g) => toCamelCase(g as unknown as Record<string, unknown>));
+    const goodsList = goods.map(toCamelCase);
 
     return NextResponse.json({
       code: 0,

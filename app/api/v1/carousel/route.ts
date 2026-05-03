@@ -1,15 +1,6 @@
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
-
-// 将下划线命名转换为驼峰命名
-function toCamelCase(obj: Record<string, unknown>): Record<string, unknown> {
-  const result: Record<string, unknown> = {};
-  for (const key in obj) {
-    const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
-    result[camelKey] = obj[key];
-  }
-  return result;
-}
+import { toCamelCase } from "@/lib/utils";
 
 // GET /api/v1/carousel - 获取轮播图列表
 export async function GET() {
@@ -24,7 +15,7 @@ export async function GET() {
       },
     });
 
-    const carouselList = carousels.map((c) => toCamelCase(c as unknown as Record<string, unknown>));
+    const carouselList = carousels.map(toCamelCase);
 
     return NextResponse.json({
       code: 0,
