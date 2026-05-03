@@ -78,7 +78,7 @@ export default function HomePage() {
   return (
     <section className="bg-gray-100">
       {/* 轮播图区域 */}
-      <div className="h-[450px] overflow-hidden">
+      <div className="h-[490px] overflow-hidden">
         <Swiper
           modules={[Autoplay, EffectFade, Pagination]}
           effect="fade"
@@ -92,7 +92,7 @@ export default function HomePage() {
               <img
                 src={carousel.imageUrl}
                 alt="轮播图"
-                className="w-full h-[450px] object-cover"
+                className="w-full h-[490px] object-cover"
               />
             </SwiperSlide>
           ))}
@@ -110,7 +110,7 @@ export default function HomePage() {
           {/* 左侧大图展示 */}
           <div className="col-span-5">
             {activeCategory && (
-              <div className="bg-white h-full overflow-hidden shadow-sm">
+              <div className="bg-white h-full overflow-hidden shadow-sm rounded-2xl">
                 <img
                   src={activeCategory.coverImageUrl || ""}
                   alt={activeCategory.name}
@@ -141,7 +141,7 @@ export default function HomePage() {
               {categoryList.slice(0, 4).map((category) => (
                 <div
                   key={category.id}
-                  className="bg-white cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm"
+                  className="bg-white cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm rounded-2xl"
                   onClick={() => changeActiveCategory(category)}
                 >
                   <div className="text-base font-semibold text-gray-800 py-4 px-5 text-center">

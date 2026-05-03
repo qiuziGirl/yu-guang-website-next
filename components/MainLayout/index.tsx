@@ -10,7 +10,7 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-50 flex justify-between items-center h-18 px-16 bg-white shadow-sm">
+      <header className="sticky top-0 z-50 flex justify-between items-center h-20 px-16 bg-white shadow-sm">
         <HeaderComponent />
       </header>
       <main className="flex-1 text-center text-gray-800">
