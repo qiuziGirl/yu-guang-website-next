@@ -1,43 +1,16 @@
-import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { toCamelCase } from "@/lib/utils";
+import { getCategoriesWithGoods } from "@/lib/data";
 
 // GET /api/v1/category - 获取所有分类（包含商品列表）
 export async function GET() {
   try {
-    const categories = await prisma.category.findMany({
-      where: {
-        deleted_at: null,
-        status: 1,
-      },
-      orderBy: {
-        sort: "asc",
-      },
-    });
-
-    // 获取每个分类下的商品
-    const categoriesWithGoods = await Promise.all(
-      categories.map(async (category) => {
-        const goodsList = await prisma.goods.findMany({
-          where: {
-            category_id: category.id,
-            deleted_at: null,
-            status: 1,
-          },
-        });
-        return {
-          ...toCamelCase(category),
-          goodsList: goodsList.map(toCamelCase),
-        };
-      })
-    );
-
+    const list = await getCategoriesWithGoods();
     return NextResponse.json({
       code: 0,
       message: "请求成功",
       data: {
-        total: categoriesWithGoods.length,
-        list: categoriesWithGoods,
+        total: list.length,
+        list,
       },
     });
   } catch (error) {

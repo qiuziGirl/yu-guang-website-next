@@ -1,22 +1,23 @@
-import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import { toCamelCase } from "@/lib/utils";
+import { getGoodsById } from "@/lib/data";
 
 // GET /api/v1/goods/:id - 获取单个商品详情
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
-    const goodsId = parseInt(id);
+    const goodsId = Number(id);
 
-    const goods = await prisma.goods.findFirst({
-      where: {
-        id: goodsId,
-        deleted_at: null,
-      },
-    });
+    if (!Number.isInteger(goodsId) || goodsId <= 0) {
+      return NextResponse.json(
+        { code: -1, message: "id 参数无效" },
+        { status: 400 }
+      );
+    }
+
+    const goods = await getGoodsById(goodsId);
 
     if (!goods) {
       return NextResponse.json(
@@ -28,7 +29,7 @@ export async function GET(
     return NextResponse.json({
       code: 0,
       message: "请求成功",
-      data: toCamelCase(goods),
+      data: goods,
     });
   } catch (error) {
     console.error("获取商品详情失败:", error);

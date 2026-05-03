@@ -1,30 +1,35 @@
-import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
 import { toCamelCase } from "@/lib/utils";
+import { getGoodsByCategoryId } from "@/lib/data";
+import type { GoodsInfo } from "@/types/api";
 
 // GET /api/v1/goods - 获取商品列表
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const categoryId = searchParams.get("categoryId");
+    const categoryIdRaw = searchParams.get("categoryId");
 
-    const where: { deleted_at: null; status: number; category_id?: number } = {
-      deleted_at: null,
-      status: 1,
-    };
-
-    if (categoryId) {
-      where.category_id = parseInt(categoryId);
+    let goodsList: GoodsInfo[];
+    if (categoryIdRaw) {
+      const id = Number(categoryIdRaw);
+      if (!Number.isInteger(id) || id <= 0) {
+        return NextResponse.json(
+          { code: -1, message: "categoryId 参数无效" },
+          { status: 400 }
+        );
+      }
+      goodsList = await getGoodsByCategoryId(id);
+    } else {
+      const goods = await prisma.goods.findMany({
+        where: { deleted_at: null, status: 1 },
+        orderBy: { created_at: "desc" },
+      });
+      goodsList = goods.map((g) => ({
+        ...(toCamelCase(g) as unknown as GoodsInfo),
+        price: g.price ? g.price.toString() : null,
+      }));
     }
-
-    const goods = await prisma.goods.findMany({
-      where,
-      orderBy: {
-        created_at: "desc",
-      },
-    });
-
-    const goodsList = goods.map(toCamelCase);
 
     return NextResponse.json({
       code: 0,
