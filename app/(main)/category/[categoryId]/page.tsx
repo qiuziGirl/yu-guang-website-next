@@ -21,39 +21,46 @@ export default async function CategoryPage({ params }: PageProps) {
 
   return (
     <section className="flex justify-center px-24 py-10 bg-gray-100 min-h-[calc(100vh-200px)]">
-      <div className="grid grid-cols-3 gap-6 max-w-[1400px] w-full">
-        {goodsList.map((goods) => {
-          const imageUrl =
-            goods.imageListUrl && goods.imageListUrl.trim()
-              ? goods.imageListUrl.split(",")[0]
-              : EMPTY_IMAGE_URL;
-          return (
-            <Link
-              key={goods.id}
-              href={`/goods/${goods.id}`}
-              className="bg-white rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group"
-            >
-              <div className="relative w-full h-[280px] overflow-hidden bg-gray-50">
-                <Image
-                  src={imageUrl}
-                  alt={goods.name}
-                  fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-6 text-left">
-                <div className="text-gray-800 font-semibold text-lg mb-2 leading-snug">
-                  {goods.name}
+      {goodsList.length === 0 ? (
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <div className="text-gray-400 text-lg mb-4">该分类暂无商品</div>
+          <div className="text-gray-300 text-sm">敬请期待更多内容</div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 gap-6 max-w-[1400px] w-full">
+          {goodsList.map((goods) => {
+            const imageUrl =
+              goods.imageListUrl && goods.imageListUrl.trim()
+                ? goods.imageListUrl.split(",")[0]
+                : EMPTY_IMAGE_URL;
+            return (
+              <Link
+                key={goods.id}
+                href={`/goods/${goods.id}`}
+                className="bg-white rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group"
+              >
+                <div className="relative w-full h-[280px] overflow-hidden bg-gray-50">
+                  <Image
+                    src={imageUrl}
+                    alt={goods.name}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
                 </div>
-                <div className="text-gray-500 text-sm leading-relaxed">
-                  {goods.englishName}
+                <div className="p-6 text-left">
+                  <div className="text-gray-800 font-semibold text-lg mb-2 leading-snug">
+                    {goods.name}
+                  </div>
+                  <div className="text-gray-500 text-sm leading-relaxed">
+                    {goods.englishName}
+                  </div>
                 </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }
