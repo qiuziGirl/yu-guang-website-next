@@ -1,5 +1,3 @@
-"use client";
-
 export default function PrivacyPolicyPage() {
   return (
     <section className="px-[15vh] py-[3vw] text-left">
@@ -13,7 +11,7 @@ export default function PrivacyPolicyPage() {
         policy to protect the personal information you provide us when visiting
         the Site.
       </p>
-      
+
       <h2 className="text-[26px] font-bold mt-8">Information Collection</h2>
       <p className="text-gray-700 text-lg leading-relaxed pb-[5vh]">
         We may require you to provide individual identifiable and background
@@ -28,7 +26,7 @@ export default function PrivacyPolicyPage() {
         of our site. This is used to help us improve our site navigation and to
         measure the effectiveness of our overall website experience.
       </p>
-      
+
       <h2 className="text-[26px] font-bold">Information Use</h2>
       <p className="text-gray-700 text-lg leading-relaxed pb-[5vh]">
         Providing us with your personal information makes it easier for us to
@@ -39,7 +37,7 @@ export default function PrivacyPolicyPage() {
         operations. By submitting such information, you consent to the transfer
         of such information outside your home country.
       </p>
-      
+
       <h2 className="text-[26px] font-bold">Information Security</h2>
       <p className="text-gray-700 text-lg leading-relaxed pb-[5vh]">
         The site will strictly manage and protect the personal data you offer to
@@ -51,14 +49,14 @@ export default function PrivacyPolicyPage() {
         to the Site, including problems, suggestions, opinions or the like will
         not be regarded as confidential.
       </p>
-      
+
       <h2 className="text-[26px] font-bold">Links to Other Sites</h2>
       <p className="text-gray-700 text-lg leading-relaxed pb-[5vh]">
         YuGuang&apos;s website contains links to other sites, and we are not
         responsible for the information collection or privacy practices, or the
         content on those sites.
       </p>
-      
+
       <h2 className="text-[26px] font-bold">Changes to this Policy</h2>
       <p className="text-gray-700 text-lg leading-relaxed pb-[5vh]">
         Please check this privacy policy periodically to inform yourself of any
