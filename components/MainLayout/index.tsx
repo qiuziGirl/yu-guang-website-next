@@ -17,7 +17,7 @@ export default async function MainLayout({ children }: MainLayoutProps) {
       <main className="flex-1 text-center text-gray-800">
         {children}
       </main>
-      <footer className="flex flex-col text-center text-white bg-[#316bab] py-8">
+      <footer className="relative z-10 flex flex-col text-center text-white bg-[#316bab] py-8">
         <FooterComponent />
       </footer>
     </div>
