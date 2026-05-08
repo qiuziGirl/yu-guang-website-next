@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -17,12 +17,23 @@ interface AnchorPosition {
   iconTop: number;
 }
 
+// 用于判断组件是否已在客户端完成水合：
+// SSR 渲染阶段返回 false，客户端水合后首次渲染立即返回 true，
+// 避免 createPortal 在 SSR 阶段访问不存在的 document.body。
+const noopSubscribe = () => () => {};
+const getHydratedSnapshot = () => true;
+const getHydratedServerSnapshot = () => false;
+
 function TooltipIcon({ icon, imageUrl, alt }: TooltipIconProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    getHydratedSnapshot,
+    getHydratedServerSnapshot
+  );
   const [anchor, setAnchor] = useState<AnchorPosition>({ centerX: 0, iconTop: 0 });
 
   const clearCloseTimer = useCallback(() => {
@@ -51,7 +62,6 @@ function TooltipIcon({ icon, imageUrl, alt }: TooltipIconProps) {
   }, []);
 
   useEffect(() => {
-    setMounted(true);
     return () => clearCloseTimer();
   }, [clearCloseTimer]);
 
