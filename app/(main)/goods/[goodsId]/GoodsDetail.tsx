@@ -3,7 +3,8 @@
 import { GoodsInfo } from "@/types/api";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import DOMPurify from "dompurify";
 
 const EMPTY_IMAGE_URL =
   "https://yu-guang-website.oss-ap-southeast-1.aliyuncs.com/static/empty.png";
@@ -85,6 +86,16 @@ function ImagePreview({
 export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewIndex, setPreviewIndex] = useState(0);
+
+  const sanitizedIntroduction = useMemo(() => {
+    if (typeof window !== "undefined" && goods.introduction) {
+      return DOMPurify.sanitize(goods.introduction, {
+        ALLOWED_TAGS: ["img", "p", "br", "strong", "em", "u", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li", "a", "table", "thead", "tbody", "tr", "th", "td"],
+        ALLOWED_ATTR: ["src", "alt", "title", "href", "target", "class"],
+      });
+    }
+    return goods.introduction || "";
+  }, [goods.introduction]);
 
   const openPreview = (index: number) => {
     setPreviewIndex(index);
@@ -169,7 +180,7 @@ export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
       {/* 商品详情介绍 */}
       {goods.introduction && (
         <div
-          dangerouslySetInnerHTML={{ __html: goods.introduction }}
+          dangerouslySetInnerHTML={{ __html: sanitizedIntroduction }}
           className="flex-1 px-24 pb-12 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-lg [&_img]:mx-auto"
         />
       )}

@@ -48,16 +48,18 @@ export default function HomeContent({
   const [activeCategory, setActiveCategory] = useState<CategoryInfo | null>(
     categoryList[0] ?? null
   );
-  const [visibleVideos, setVisibleVideos] = useState<Set<number>>(new Set());
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const index = Number(entry.target.getAttribute("data-video-index"));
           if (entry.isIntersecting) {
-            setVisibleVideos((prev) => new Set([...prev, index]));
+            const video = entry.target as HTMLVideoElement;
+            const src = video.getAttribute("data-src");
+            if (src && !video.src) {
+              video.src = src;
+            }
           }
         });
       },
@@ -191,23 +193,13 @@ export default function HomeContent({
           {carouselVideoList.map((item, index) => (
             <SwiperSlide key={index}>
               <div className="relative w-full h-[350px] bg-black">
-                {visibleVideos.has(index) ? (
-                  <video
-                    ref={(el) => { videoRefs.current[index] = el; }}
-                    src={item.videoUrl}
-                    controls
-                    className="w-full h-full"
-                    data-video-index={index}
-                  />
-                ) : (
-                  <div
-                    ref={(el) => { videoRefs.current[index] = el as unknown as HTMLVideoElement; }}
-                    className="w-full h-full flex items-center justify-center bg-gray-800"
-                    data-video-index={index}
-                  >
-                    <div className="text-gray-400 text-sm">加载中...</div>
-                  </div>
-                )}
+                <video
+                  ref={(el) => { videoRefs.current[index] = el; }}
+                  controls
+                  className="w-full h-full"
+                  data-video-index={index}
+                  data-src={item.videoUrl}
+                />
               </div>
             </SwiperSlide>
           ))}
