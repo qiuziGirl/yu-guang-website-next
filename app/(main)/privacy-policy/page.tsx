@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "隐私政策",
+  description: "余光照明网站隐私与 Cookie 政策",
+};
+
 export default function PrivacyPolicyPage() {
   return (
     <section className="px-[15vh] py-[3vw] text-left">

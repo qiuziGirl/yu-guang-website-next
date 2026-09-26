@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import { getIntroduction } from "@/lib/data";
+import { sanitizeHtml } from "@/lib/sanitize-html";
+import { defaultDescription, defaultOgImage } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "关于余光",
+  description: defaultDescription,
+  openGraph: {
+    title: "关于余光",
+    description: defaultDescription,
+    images: [{ url: defaultOgImage }],
+  },
+};
 
 export default async function AboutPage() {
   const introduction = await getIntroduction();
-  const richText = introduction?.richText ?? "";
+  const richText = sanitizeHtml(introduction?.richText ?? "");
 
   return (
     <section className="min-h-[calc(100vh-200px)] px-24 py-10 bg-white">

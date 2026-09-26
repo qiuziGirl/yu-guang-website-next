@@ -1,9 +1,41 @@
+import type { Metadata } from "next";
 import { getGoodsById } from "@/lib/data";
+import { defaultOgImage } from "@/lib/site";
 import { notFound } from "next/navigation";
 import GoodsDetail from "./GoodsDetail";
 
 interface PageProps {
   params: Promise<{ goodsId: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { goodsId } = await params;
+  const id = Number(goodsId);
+  if (!Number.isInteger(id) || id <= 0) {
+    return { title: "商品不存在" };
+  }
+  const goods = await getGoodsById(id);
+  if (!goods) {
+    return { title: "商品不存在" };
+  }
+  const description =
+    goods.description?.trim() || `${goods.name} - 余光照明`;
+  const firstImage =
+    goods.imageListUrl
+      ?.split(",")
+      .map((u) => u.trim())
+      .find(Boolean) || defaultOgImage;
+  return {
+    title: goods.name,
+    description,
+    openGraph: {
+      title: goods.name,
+      description,
+      images: [{ url: firstImage }],
+    },
+  };
 }
 
 export default async function GoodsPage({ params }: PageProps) {
@@ -15,11 +47,7 @@ export default async function GoodsPage({ params }: PageProps) {
 
   const goods = await getGoodsById(id);
   if (!goods) {
-    return (
-      <section className="px-24 py-8 text-center bg-gray-100 min-h-[calc(100vh-200px)]">
-        <h2 className="text-2xl text-gray-600">商品不存在</h2>
-      </section>
-    );
+    notFound();
   }
 
   const imageUrlList =

@@ -1,4 +1,6 @@
-import { getGoodsByCategoryId } from "@/lib/data";
+import type { Metadata } from "next";
+import { getCategoryById, getGoodsByCategoryId } from "@/lib/data";
+import { defaultOgImage } from "@/lib/site";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -10,10 +12,41 @@ interface PageProps {
   params: Promise<{ categoryId: string }>;
 }
 
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { categoryId } = await params;
+  const id = Number(categoryId);
+  if (!Number.isInteger(id) || id <= 0) {
+    return { title: "分类不存在" };
+  }
+  const category = await getCategoryById(id);
+  if (!category) {
+    return { title: "分类不存在" };
+  }
+  const description =
+    category.description?.trim() || `${category.name} - 余光照明产品分类`;
+  const image = category.coverImageUrl || defaultOgImage;
+  return {
+    title: category.name,
+    description,
+    openGraph: {
+      title: category.name,
+      description,
+      images: [{ url: image }],
+    },
+  };
+}
+
 export default async function CategoryPage({ params }: PageProps) {
   const { categoryId } = await params;
   const id = Number(categoryId);
   if (!Number.isInteger(id) || id <= 0) {
+    notFound();
+  }
+
+  const category = await getCategoryById(id);
+  if (!category) {
     notFound();
   }
 

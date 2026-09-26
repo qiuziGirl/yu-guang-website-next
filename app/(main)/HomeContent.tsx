@@ -94,7 +94,7 @@ export default function HomeContent({
               <div className="relative w-full h-[490px]">
                 <Image
                   src={carousel.imageUrl}
-                  alt="轮播图"
+                  alt={carousel.remark?.trim() || `余光照明 - 轮播 ${index + 1}`}
                   fill
                   sizes="100vw"
                   className="object-cover"
