@@ -149,17 +149,19 @@ export const getCarousels = unstable_cache(
   { revalidate: REVALIDATE_SECONDS, tags: ["carousels"] }
 );
 
-export const getIntroduction = unstable_cache(
-  async (): Promise<IntroductionInfo | null> => {
-    const intro = await prisma.introduction.findFirst({
-      where: { deleted_at: null, status: 1 },
-      orderBy: { version: "desc" },
-    });
-    return intro ? serializeIntroduction(intro) : null;
-  },
-  ["introduction"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["introduction"] }
-);
+export function getIntroduction(version: number) {
+  return unstable_cache(
+    async (): Promise<IntroductionInfo | null> => {
+      const intro = await prisma.introduction.findFirst({
+        where: { deleted_at: null, status: 1, version },
+        orderBy: [{ updated_at: "desc" }, { id: "desc" }],
+      });
+      return intro ? serializeIntroduction(intro) : null;
+    },
+    ["introduction", String(version)],
+    { revalidate: REVALIDATE_SECONDS, tags: ["introduction"] }
+  )();
+}
 
 export async function getGoodsByCategoryId(
   categoryId: number
