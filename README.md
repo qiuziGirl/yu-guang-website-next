@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 余光照明官网（Next.js）
 
-## Getting Started
+中山市余光照明科技有限公司官方网站。正式域名：https://yuguanglighting.cn
 
-First, run the development server:
+基于 [Next.js](https://nextjs.org) App Router，使用 Prisma 连接 MySQL/MariaDB。
+
+## 环境变量
+
+| 变量 | 说明 |
+|------|------|
+| `DATABASE_URL` | MySQL 连接串（Prisma 使用） |
+| `NEXT_PUBLIC_SITE_URL` | 站点绝对根 URL，无尾斜杠；缺省 `https://yuguanglighting.cn` |
+
+本地开发可复制 `.env.example`（如有）或自行配置；**请勿将 `.env` 提交到版本库**。`NEXT_PUBLIC_SITE_URL` 用于 sitemap、Open Graph 等绝对链接生成，生产环境建议显式配置。
+
+## 开发
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+开发服务器默认端口见 `package.json` scripts（当前为 **3001**）。浏览器访问 http://localhost:3001。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+其他常用命令：
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm run build   # 生产构建
+pnpm run start   # 启动生产服务
+pnpm run lint    # ESLint 检查
+```
 
-## Learn More
+`postinstall` 会自动执行 `prisma generate`；数据库 schema 变更后需自行执行 `pnpm exec prisma migrate dev` 或部署侧迁移。
 
-To learn more about Next.js, take a look at the following resources:
+## 第一阶段能力
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 页面 metadata / Open Graph
+- `/sitemap.xml`、`/robots.txt`
+- 关于页富文本消毒
+- 商品/分类缺失返回 404
+- 导航与列表读路径约 5 分钟缓存；首页仅加载分类封面数据
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 技术栈
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 16 · React 19 · TypeScript
+- Tailwind CSS 4
+- Prisma 7 · MariaDB/MySQL
