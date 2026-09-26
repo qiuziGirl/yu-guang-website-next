@@ -14,11 +14,11 @@ export async function generateMetadata({
   const { goodsId } = await params;
   const id = Number(goodsId);
   if (!Number.isInteger(id) || id <= 0) {
-    return { title: "商品不存在" };
+    notFound();
   }
   const goods = await getGoodsById(id);
   if (!goods) {
-    return { title: "商品不存在" };
+    notFound();
   }
   const description =
     goods.description?.trim() || `${goods.name} - 余光照明`;

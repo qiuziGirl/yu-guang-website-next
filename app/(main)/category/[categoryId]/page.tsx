@@ -18,11 +18,11 @@ export async function generateMetadata({
   const { categoryId } = await params;
   const id = Number(categoryId);
   if (!Number.isInteger(id) || id <= 0) {
-    return { title: "分类不存在" };
+    notFound();
   }
   const category = await getCategoryById(id);
   if (!category) {
-    return { title: "分类不存在" };
+    notFound();
   }
   const description =
     category.description?.trim() || `${category.name} - 余光照明产品分类`;
