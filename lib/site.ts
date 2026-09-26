@@ -13,5 +13,8 @@ export const defaultTitle = "余光照明";
 export const defaultDescription =
   "中山市余光照明科技有限公司 - 专业LED太阳能路灯、投光灯、工矿灯、花园灯生产商";
 
+export const defaultDescriptionEn =
+  "Zhongshan Yuguang Lighting Technology Co., Ltd. - Manufacturer of LED solar street lights, floodlights, high bay lights, and garden lights";
+
 export const defaultOgImage =
   "https://yu-guang-website.oss-ap-southeast-1.aliyuncs.com/static/logo_128x128.png";

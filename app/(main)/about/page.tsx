@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { getIntroduction } from "@/lib/data";
 import { sanitizeHtml } from "@/lib/sanitize-html";
-import { defaultDescription, defaultOgImage } from "@/lib/site";
+import {
+  defaultDescription,
+  defaultDescriptionEn,
+  defaultOgImage,
+} from "@/lib/site";
 import {
   introductionVersion,
   parseSiteLang,
@@ -10,8 +14,16 @@ import {
 } from "@/lib/site-lang";
 
 const ABOUT_COPY = {
-  zh: { title: "关于余光", empty: "暂无介绍" },
-  en: { title: "About", empty: "No introduction yet" },
+  zh: {
+    title: "关于余光",
+    empty: "暂无介绍",
+    description: defaultDescription,
+  },
+  en: {
+    title: "About",
+    empty: "No introduction yet",
+    description: defaultDescriptionEn,
+  },
 } as const;
 
 async function readAboutLang() {
@@ -21,14 +33,14 @@ async function readAboutLang() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await readAboutLang();
-  const title = ABOUT_COPY[lang].title;
+  const copy = ABOUT_COPY[lang];
 
   return {
-    title,
-    description: defaultDescription,
+    title: copy.title,
+    description: copy.description,
     openGraph: {
-      title,
-      description: defaultDescription,
+      title: copy.title,
+      description: copy.description,
       images: [{ url: defaultOgImage }],
     },
   };
