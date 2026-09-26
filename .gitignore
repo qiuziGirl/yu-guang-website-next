@@ -46,3 +46,6 @@ next-env.d.ts
 /generated
 
 .claude/settings.local.json
+
+# 本地 agent 执行痕迹（brief/report），不入库
+.superpowers/
