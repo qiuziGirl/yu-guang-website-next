@@ -217,6 +217,14 @@ export default function FooterComponent() {
         >
           Privacy Policy
         </span>
+        <a
+          className="pl-1 hover:underline"
+          href="https://beian.miit.gov.cn/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          粤ICP备2025474449号-1
+        </a>
       </div>
     </div>
   );
