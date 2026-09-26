@@ -80,7 +80,7 @@ export default function HomeContent({
   return (
     <section className="bg-gray-100">
       {/* 轮播图区域 */}
-      <div className="h-[490px] overflow-hidden">
+      <div className="h-[220px] sm:h-[320px] lg:h-[490px] overflow-hidden">
         <Swiper
           modules={[Autoplay, EffectFade, Pagination]}
           effect="fade"
@@ -91,7 +91,7 @@ export default function HomeContent({
         >
           {carouselList.map((carousel, index) => (
             <SwiperSlide key={carousel.id}>
-              <div className="relative w-full h-[490px]">
+              <div className="relative w-full h-[220px] sm:h-[320px] lg:h-[490px]">
                 <Image
                   src={carousel.imageUrl}
                   alt={carousel.remark?.trim() || `余光照明 - 轮播 ${index + 1}`}
@@ -107,29 +107,29 @@ export default function HomeContent({
       </div>
 
       {/* 为您推荐标题 */}
-      <h2 className="text-3xl font-semibold text-gray-800 mt-12 mb-10">
+      <h2 className="text-2xl lg:text-3xl font-semibold text-gray-800 mt-8 mb-6 lg:mt-12 lg:mb-10 px-4 lg:px-0">
         为您推荐
       </h2>
 
       {/* 产品分类展示区域 */}
-      <div className="px-10 pb-16 max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-12 gap-8">
+      <div className="px-4 lg:px-10 pb-10 lg:pb-16 max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* 左侧大图展示 */}
-          <div className="col-span-5">
+          <div className="lg:col-span-5">
             {activeCategory && (
               <div className="bg-white h-full overflow-hidden shadow-sm rounded-2xl">
                 {activeCategory.coverImageUrl && (
-                  <div className="relative h-[450px] w-full">
+                  <div className="relative h-[240px] lg:h-[450px] w-full">
                     <Image
                       src={activeCategory.coverImageUrl}
                       alt={activeCategory.name}
                       fill
-                      sizes="(min-width: 1400px) 560px, 40vw"
+                      sizes="(min-width: 1400px) 560px, (min-width: 1024px) 40vw, calc(100vw - 2rem)"
                       className="object-cover"
                     />
                   </div>
                 )}
-                <div className="flex flex-col items-start p-8">
+                <div className="flex flex-col items-start p-5 lg:p-8">
                   <h3 className="text-xl text-gray-800 font-semibold mb-3">
                     {activeCategory.name}
                   </h3>
@@ -149,25 +149,32 @@ export default function HomeContent({
           </div>
 
           {/* 右侧分类卡片网格 - 2x2布局，只显示前4个 */}
-          <div className="col-span-7">
-            <div className="grid grid-cols-2 gap-5">
+          <div className="lg:col-span-7">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
               {categoryList.slice(0, 4).map((category) => (
                 <div
                   key={category.id}
                   className="bg-white cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm rounded-2xl group"
-                  onClick={() => setActiveCategory(category)}
+                  onClick={() => {
+                    // 小屏大图在卡片上方，直接进入分类；桌面仍只切换预览
+                    if (window.matchMedia("(min-width: 1024px)").matches) {
+                      setActiveCategory(category);
+                      return;
+                    }
+                    goToCategory(category.id);
+                  }}
                 >
                   <div className="text-base font-semibold text-gray-800 py-4 px-5 text-center">
                     {category.name}
                   </div>
                   <div className="overflow-hidden flex items-center justify-center bg-gray-50 p-4">
                     {category.coverImageUrl && (
-                      <div className="relative w-full h-[200px]">
+                      <div className="relative w-full h-[160px] lg:h-[200px]">
                         <Image
                           src={category.coverImageUrl}
                           alt={category.name}
                           fill
-                          sizes="(min-width: 1400px) 380px, 30vw"
+                          sizes="(min-width: 1400px) 380px, (min-width: 1024px) 30vw, (min-width: 640px) 50vw, calc(100vw - 4rem)"
                           className="object-contain transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
@@ -181,21 +188,26 @@ export default function HomeContent({
       </div>
 
       {/* 视频展示区域 */}
-      <div className="px-10 py-16 max-w-[1400px] mx-auto">
+      <div className="px-4 lg:px-10 py-10 lg:py-16 max-w-[1400px] mx-auto">
         <Swiper
           modules={[Navigation]}
-          slidesPerView={3}
-          spaceBetween={30}
+          spaceBetween={16}
           navigation={true}
-          loop={true}
+          loop={carouselVideoList.length > 3}
+          breakpoints={{
+            0: { slidesPerView: 1, spaceBetween: 12 },
+            768: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 30 },
+          }}
           className="video-swiper"
         >
           {carouselVideoList.map((item, index) => (
             <SwiperSlide key={index}>
-              <div className="relative w-full h-[350px] bg-black">
+              <div className="relative w-full h-[200px] sm:h-[280px] lg:h-[350px] bg-black">
                 <video
                   ref={(el) => { videoRefs.current[index] = el; }}
                   controls
+                  playsInline
                   className="w-full h-full"
                   data-video-index={index}
                   data-src={item.videoUrl}

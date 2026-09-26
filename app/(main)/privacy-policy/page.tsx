@@ -7,20 +7,20 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <section className="px-[15vh] py-[3vw] text-left">
-      <h1 className="text-[56px] pb-1">
+    <section className="px-4 md:px-10 lg:px-24 py-8 md:py-12 text-left max-w-[960px] mx-auto">
+      <h1 className="text-3xl md:text-4xl lg:text-5xl pb-1">
         Cookies Policy
       </h1>
       <hr className="border-gray-200 my-6" />
-      <p className="text-gray-700 text-lg leading-relaxed py-4">
+      <p className="text-gray-700 text-base md:text-lg leading-relaxed py-4">
         YuGuang issues this privacy policy as its commitment on protecting the
         privacy of every individual or company. This statement outlines the
         policy to protect the personal information you provide us when visiting
         the Site.
       </p>
 
-      <h2 className="text-[26px] font-bold mt-8">Information Collection</h2>
-      <p className="text-gray-700 text-lg leading-relaxed pb-[5vh]">
+      <h2 className="text-xl md:text-2xl font-bold mt-8">Information Collection</h2>
+      <p className="text-gray-700 text-base md:text-lg leading-relaxed pb-8 md:pb-12">
         We may require you to provide individual identifiable and background
         information for the convenience of your visiting or for providing you
         services after visiting the Site. You reserve the right of offering your
@@ -34,8 +34,8 @@ export default function PrivacyPolicyPage() {
         measure the effectiveness of our overall website experience.
       </p>
 
-      <h2 className="text-[26px] font-bold">Information Use</h2>
-      <p className="text-gray-700 text-lg leading-relaxed pb-[5vh]">
+      <h2 className="text-xl md:text-2xl font-bold mt-8">Information Use</h2>
+      <p className="text-gray-700 text-base md:text-lg leading-relaxed pb-8 md:pb-12">
         Providing us with your personal information makes it easier for us to
         make our website relevant to you, communicate with you, assist you in
         making a purchase of our products, and allow you access to certain
@@ -45,8 +45,8 @@ export default function PrivacyPolicyPage() {
         of such information outside your home country.
       </p>
 
-      <h2 className="text-[26px] font-bold">Information Security</h2>
-      <p className="text-gray-700 text-lg leading-relaxed pb-[5vh]">
+      <h2 className="text-xl md:text-2xl font-bold mt-8">Information Security</h2>
+      <p className="text-gray-700 text-base md:text-lg leading-relaxed pb-8 md:pb-12">
         The site will strictly manage and protect the personal data you offer to
         us. And your personal information will be kept confidential unless you
         clearly state in the relevant part of the Site that you agree to expose
@@ -57,15 +57,15 @@ export default function PrivacyPolicyPage() {
         not be regarded as confidential.
       </p>
 
-      <h2 className="text-[26px] font-bold">Links to Other Sites</h2>
-      <p className="text-gray-700 text-lg leading-relaxed pb-[5vh]">
+      <h2 className="text-xl md:text-2xl font-bold mt-8">Links to Other Sites</h2>
+      <p className="text-gray-700 text-base md:text-lg leading-relaxed pb-8 md:pb-12">
         YuGuang&apos;s website contains links to other sites, and we are not
         responsible for the information collection or privacy practices, or the
         content on those sites.
       </p>
 
-      <h2 className="text-[26px] font-bold">Changes to this Policy</h2>
-      <p className="text-gray-700 text-lg leading-relaxed pb-[5vh]">
+      <h2 className="text-xl md:text-2xl font-bold mt-8">Changes to this Policy</h2>
+      <p className="text-gray-700 text-base md:text-lg leading-relaxed pb-8 md:pb-12">
         Please check this privacy policy periodically to inform yourself of any
         changes.
       </p>

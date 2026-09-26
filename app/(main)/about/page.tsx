@@ -18,7 +18,7 @@ export default async function AboutPage() {
   const richText = sanitizeHtml(introduction?.richText ?? "");
 
   return (
-    <section className="min-h-[calc(100vh-200px)] px-24 py-10 bg-white">
+    <section className="min-h-[calc(100vh-200px)] px-4 md:px-10 lg:px-24 py-8 md:py-10 bg-white">
       <div
         dangerouslySetInnerHTML={{ __html: richText }}
         className="max-w-[1200px] mx-auto leading-relaxed text-gray-800 text-base

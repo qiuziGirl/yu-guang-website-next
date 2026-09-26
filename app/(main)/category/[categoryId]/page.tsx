@@ -53,14 +53,14 @@ export default async function CategoryPage({ params }: PageProps) {
   const goodsList = await getGoodsByCategoryId(id);
 
   return (
-    <section className="flex justify-center px-24 py-10 bg-gray-100 min-h-[calc(100vh-200px)]">
+    <section className="flex justify-center px-4 md:px-10 lg:px-24 py-6 md:py-10 bg-gray-100 min-h-[calc(100vh-200px)]">
       {goodsList.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[400px]">
           <div className="text-gray-400 text-lg mb-4">该分类暂无商品</div>
           <div className="text-gray-300 text-sm">敬请期待更多内容</div>
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-6 max-w-[1400px] w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-[1400px] w-full">
           {goodsList.map((goods) => {
             const imageUrl =
               goods.imageListUrl && goods.imageListUrl.trim()
@@ -72,7 +72,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 href={`/goods/${goods.id}`}
                 className="bg-white rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group"
               >
-                <div className="relative w-full h-[280px] overflow-hidden bg-gray-50">
+                <div className="relative w-full h-[200px] md:h-[240px] lg:h-[280px] overflow-hidden bg-gray-50">
                   <Image
                     src={imageUrl}
                     alt={goods.name}
@@ -81,7 +81,7 @@ export default async function CategoryPage({ params }: PageProps) {
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <div className="p-6 text-left">
+                <div className="p-4 md:p-6 text-left">
                   <div className="text-gray-800 font-semibold text-lg mb-2 leading-snug">
                     {goods.name}
                   </div>

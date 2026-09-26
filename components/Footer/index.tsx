@@ -24,6 +24,15 @@ const noopSubscribe = () => () => {};
 const getHydratedSnapshot = () => true;
 const getHydratedServerSnapshot = () => false;
 
+const subscribeFinePointerHover = (onStoreChange: () => void) => {
+  const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+  mq.addEventListener("change", onStoreChange);
+  return () => mq.removeEventListener("change", onStoreChange);
+};
+const getFinePointerHoverSnapshot = () =>
+  window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+const getFinePointerHoverServerSnapshot = () => false;
+
 function TooltipIcon({ icon, imageUrl, alt }: TooltipIconProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -33,6 +42,11 @@ function TooltipIcon({ icon, imageUrl, alt }: TooltipIconProps) {
     noopSubscribe,
     getHydratedSnapshot,
     getHydratedServerSnapshot
+  );
+  const hoverCapable = useSyncExternalStore(
+    subscribeFinePointerHover,
+    getFinePointerHoverSnapshot,
+    getFinePointerHoverServerSnapshot
   );
   const [anchor, setAnchor] = useState<AnchorPosition>({ centerX: 0, iconTop: 0 });
 
@@ -79,6 +93,19 @@ function TooltipIcon({ icon, imageUrl, alt }: TooltipIconProps) {
     };
   }, [open, updateAnchor]);
 
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (e: PointerEvent) => {
+      const t = e.target;
+      if (!(t instanceof Node)) return;
+      if (wrapRef.current?.contains(t)) return;
+      if (panelRef.current?.contains(t)) return;
+      setOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [open]);
+
   const handleTriggerEnter = () => {
     clearCloseTimer();
     const el = wrapRef.current;
@@ -120,8 +147,8 @@ function TooltipIcon({ icon, imageUrl, alt }: TooltipIconProps) {
           top: anchor.iconTop,
           transform: "translate(-50%, calc(-100% - 8px))",
         }}
-        onMouseEnter={handlePanelEnter}
-        onMouseLeave={handlePanelLeave}
+        onMouseEnter={hoverCapable ? handlePanelEnter : undefined}
+        onMouseLeave={hoverCapable ? handlePanelLeave : undefined}
       >
         <Image
           src={imageUrl}
@@ -140,8 +167,15 @@ function TooltipIcon({ icon, imageUrl, alt }: TooltipIconProps) {
       <div
         ref={wrapRef}
         className="relative inline-block cursor-pointer transition-opacity hover:opacity-80"
-        onMouseEnter={handleTriggerEnter}
-        onMouseLeave={handleTriggerLeave}
+        onMouseEnter={hoverCapable ? handleTriggerEnter : undefined}
+        onMouseLeave={hoverCapable ? handleTriggerLeave : undefined}
+        onClick={() => {
+          // 可悬停设备只保留 hover，避免点击把刚打开的浮层关掉
+          if (hoverCapable) return;
+          clearCloseTimer();
+          updateAnchor();
+          setOpen((v) => !v);
+        }}
       >
         {icon}
       </div>
@@ -154,8 +188,8 @@ export default function FooterComponent() {
   const router = useRouter();
 
   return (
-    <div>
-      <div className="flex items-center justify-center gap-6 mb-4">
+    <div className="px-4">
+      <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-4">
         <span className="text-base">Contact US</span>
 
         <TooltipIcon
@@ -209,7 +243,7 @@ export default function FooterComponent() {
         />
       </div>
 
-      <div className="text-lg">
+      <div className="text-sm md:text-lg leading-relaxed">
         Copyright {dayjs().format("YYYY")}© Yuguang Enterprises.
         <span
           className="pl-1 cursor-pointer hover:underline"

@@ -117,10 +117,10 @@ export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
   return (
     <section className="flex flex-col bg-gray-100 min-h-[calc(100vh-200px)]">
       {/* 商品信息头部 */}
-      <div className="flex gap-12 px-24 py-12 bg-white mb-8 text-left">
-        <div className="w-1/3">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 px-4 md:px-10 lg:px-24 py-8 lg:py-12 bg-white mb-6 lg:mb-8 text-left">
+        <div className="w-full lg:w-1/3">
           <div
-            className="relative w-full h-[400px] cursor-pointer hover:opacity-90 transition-opacity"
+            className="relative w-full h-[280px] lg:h-[400px] cursor-pointer hover:opacity-90 transition-opacity"
             onClick={() => openPreview(0)}
           >
             <Image
@@ -158,10 +158,10 @@ export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
           )}
         </div>
         <div className="flex-1">
-          <h1 className="text-3xl font-semibold text-gray-800 mb-3 leading-tight">
+          <h1 className="text-2xl lg:text-3xl font-semibold text-gray-800 mb-3 leading-tight">
             {goods.name}
           </h1>
-          <h2 className="text-xl text-gray-500 font-medium mb-6">
+          <h2 className="text-lg lg:text-xl text-gray-500 font-medium mb-4 lg:mb-6">
             {goods.englishName}
           </h2>
           {goods.description && (
@@ -181,7 +181,7 @@ export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
       {goods.introduction && (
         <div
           dangerouslySetInnerHTML={{ __html: sanitizedIntroduction }}
-          className="flex-1 px-24 pb-12 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-lg [&_img]:mx-auto"
+          className="flex-1 px-4 md:px-10 lg:px-24 pb-8 lg:pb-12 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-lg [&_img]:mx-auto"
         />
       )}
 

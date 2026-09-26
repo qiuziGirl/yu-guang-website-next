@@ -45,6 +45,18 @@ body {
   background: rgba(0, 0, 0, 0.7);
 }
 
+@media (max-width: 1023px) {
+  .video-swiper .swiper-button-next,
+  .video-swiper .swiper-button-prev {
+    width: 32px;
+    height: 32px;
+  }
+  .video-swiper .swiper-button-next:after,
+  .video-swiper .swiper-button-prev:after {
+    font-size: 14px;
+  }
+}
+
 /* Swiper 分页器样式 */
 .swiper-pagination-bullet {
   background: rgba(255, 255, 255, 0.5);
