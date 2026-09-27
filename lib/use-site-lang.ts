@@ -29,10 +29,10 @@ export function notifySiteLangChange() {
   langListeners.forEach((listener) => listener());
 }
 
-export function useSiteLang(): SiteLang {
+export function useSiteLang(initialLang: SiteLang = "zh"): SiteLang {
   return useSyncExternalStore(
     subscribeSiteLang,
     readSiteLangSnapshot,
-    () => "zh" as SiteLang
+    () => initialLang
   );
 }

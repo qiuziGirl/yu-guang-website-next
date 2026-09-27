@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { uiCopy } from "@/lib/i18n/ui";
 import { localizedPath } from "@/lib/locale-path";
+import type { SiteLang } from "@/lib/site-lang";
 import { useSiteLang } from "@/lib/use-site-lang";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
@@ -187,9 +188,13 @@ function TooltipIcon({ icon, imageUrl, alt }: TooltipIconProps) {
   );
 }
 
-export default function FooterComponent() {
+interface FooterProps {
+  initialLang: SiteLang;
+}
+
+export default function FooterComponent({ initialLang }: FooterProps) {
   const router = useRouter();
-  const lang = useSiteLang();
+  const lang = useSiteLang(initialLang);
   const copy = uiCopy(lang);
 
   return (

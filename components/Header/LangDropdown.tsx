@@ -25,15 +25,19 @@ function getHoverSnapshot() {
 }
 
 interface LangDropdownProps {
+  initialLang: SiteLang;
   /** 选中语言后的回调，用于移动端关闭抽屉 */
   onSelected?: () => void;
 }
 
-export default function LangDropdown({ onSelected }: LangDropdownProps) {
+export default function LangDropdown({
+  initialLang,
+  onSelected,
+}: LangDropdownProps) {
   const router = useRouter();
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const lang = useSiteLang();
+  const lang = useSiteLang(initialLang);
   const canHover = useSyncExternalStore(subscribeHover, getHoverSnapshot, () => true);
   const current = OPTIONS.find((item) => item.value === lang) ?? OPTIONS[0];
 

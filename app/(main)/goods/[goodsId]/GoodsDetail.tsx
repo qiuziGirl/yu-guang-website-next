@@ -99,8 +99,7 @@ export default function GoodsDetail({
   imageUrlList,
   initialLang,
 }: GoodsDetailProps) {
-  const clientLang = useSiteLang();
-  const lang = clientLang || initialLang;
+  const lang = useSiteLang(initialLang);
   const copy = uiCopy(lang);
   const displayName = localizedName(goods, lang);
   const displayDescription = localizedDescription(goods, lang);

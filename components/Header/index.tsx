@@ -6,13 +6,14 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import { Menu, X } from "lucide-react";
 import { uiCopy } from "@/lib/i18n/ui";
 import { localizedPath } from "@/lib/locale-path";
-import { localizedName } from "@/lib/site-lang";
+import { localizedName, type SiteLang } from "@/lib/site-lang";
 import { useSiteLang } from "@/lib/use-site-lang";
 import type { CategoryInfo } from "@/types/api";
 import LangDropdown from "./LangDropdown";
 
 interface HeaderProps {
   categories: CategoryInfo[];
+  initialLang: SiteLang;
 }
 
 const DESKTOP_QUERY = "(min-width: 1024px)";
@@ -41,8 +42,11 @@ function getFocusable(root: HTMLElement) {
   );
 }
 
-export default function HeaderComponent({ categories }: HeaderProps) {
-  const lang = useSiteLang();
+export default function HeaderComponent({
+  categories,
+  initialLang,
+}: HeaderProps) {
+  const lang = useSiteLang(initialLang);
   const copy = uiCopy(lang);
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -209,7 +213,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
 
       <nav className="hidden lg:flex items-center gap-14 text-xl font-semibold">
         {navLinks}
-        {isDesktop && <LangDropdown />}
+        {isDesktop && <LangDropdown initialLang={initialLang} />}
       </nav>
 
       <button
@@ -266,7 +270,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
             </div>
             {!isDesktop && (
               <div className="mt-6">
-                <LangDropdown onSelected={close} />
+                <LangDropdown initialLang={initialLang} onSelected={close} />
               </div>
             )}
           </aside>

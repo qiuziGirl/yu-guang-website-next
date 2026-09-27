@@ -2,7 +2,7 @@
 
 import { uiCopy } from "@/lib/i18n/ui";
 import { localizedPath } from "@/lib/locale-path";
-import { localizedDescription, localizedName } from "@/lib/site-lang";
+import { localizedDescription, localizedName, type SiteLang } from "@/lib/site-lang";
 import { useSiteLang } from "@/lib/use-site-lang";
 import { CategoryInfo, CarouselInfo } from "@/types/api";
 import { ChevronRight } from "lucide-react";
@@ -42,13 +42,15 @@ const carouselVideoList = [
 interface HomeContentProps {
   categoryList: CategoryInfo[];
   carouselList: CarouselInfo[];
+  initialLang: SiteLang;
 }
 
 export default function HomeContent({
   categoryList,
   carouselList,
+  initialLang,
 }: HomeContentProps) {
-  const lang = useSiteLang();
+  const lang = useSiteLang(initialLang);
   const copy = uiCopy(lang);
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState<CategoryInfo | null>(

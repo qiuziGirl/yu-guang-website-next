@@ -33,13 +33,18 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 async function HomePageContent() {
-  const [categoryList, carouselList] = await Promise.all([
+  const [categoryList, carouselList, lang] = await Promise.all([
     getCategoriesForHome(),
     getCarousels(),
+    readSiteLang(),
   ]);
 
   return (
-    <HomeContent categoryList={categoryList} carouselList={carouselList} />
+    <HomeContent
+      categoryList={categoryList}
+      carouselList={carouselList}
+      initialLang={lang}
+    />
   );
 }
 
