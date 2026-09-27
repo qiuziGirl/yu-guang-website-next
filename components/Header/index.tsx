@@ -237,7 +237,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
             aria-modal="true"
             aria-label="菜单"
             tabIndex={-1}
-            className={`absolute right-0 top-0 h-full w-[min(80vw,320px)] bg-white shadow-xl flex flex-col p-6 gap-1 text-lg font-semibold transition-transform duration-300 ${shown ? "translate-x-0" : "translate-x-full"}`}
+            className={`absolute right-0 top-0 h-full w-[min(72vw,280px)] bg-white shadow-xl flex flex-col p-6 gap-1 text-lg font-semibold transition-transform duration-300 ${shown ? "translate-x-0" : "translate-x-full"}`}
           >
             <div className="flex flex-col gap-1 mt-10">
               {categories.map((category) => (
