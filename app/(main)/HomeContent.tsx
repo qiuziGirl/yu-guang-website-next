@@ -1,5 +1,8 @@
 "use client";
 
+import { uiCopy } from "@/lib/i18n/ui";
+import { localizedDescription, localizedName } from "@/lib/site-lang";
+import { useSiteLang } from "@/lib/use-site-lang";
 import { CategoryInfo, CarouselInfo } from "@/types/api";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -44,6 +47,8 @@ export default function HomeContent({
   categoryList,
   carouselList,
 }: HomeContentProps) {
+  const lang = useSiteLang();
+  const copy = uiCopy(lang);
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState<CategoryInfo | null>(
     categoryList[0] ?? null
@@ -94,7 +99,10 @@ export default function HomeContent({
               <div className="relative w-full h-[220px] sm:h-[320px] lg:h-[490px]">
                 <Image
                   src={carousel.imageUrl}
-                  alt={carousel.remark?.trim() || `余光照明 - 轮播 ${index + 1}`}
+                  alt={
+                    carousel.remark?.trim() ||
+                    `${copy.carouselAlt} ${index + 1}`
+                  }
                   fill
                   sizes="100vw"
                   className="object-cover"
@@ -108,7 +116,7 @@ export default function HomeContent({
 
       {/* 为您推荐标题 */}
       <h2 className="text-2xl lg:text-3xl font-semibold text-gray-800 mt-8 mb-6 lg:mt-12 lg:mb-10 px-4 lg:px-0">
-        为您推荐
+        {copy.homeRecommend}
       </h2>
 
       {/* 产品分类展示区域 */}
@@ -122,7 +130,7 @@ export default function HomeContent({
                   <div className="relative h-[240px] lg:h-[450px] w-full">
                     <Image
                       src={activeCategory.coverImageUrl}
-                      alt={activeCategory.name}
+                      alt={localizedName(activeCategory, lang)}
                       fill
                       sizes="(min-width: 1400px) 560px, (min-width: 1024px) 40vw, calc(100vw - 2rem)"
                       className="object-cover"
@@ -131,16 +139,18 @@ export default function HomeContent({
                 )}
                 <div className="flex flex-col items-start p-5 lg:p-8">
                   <h3 className="text-xl text-gray-800 font-semibold mb-3">
-                    {activeCategory.name}
+                    {localizedName(activeCategory, lang)}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-5">
-                    {activeCategory.description}
-                  </p>
+                  {localizedDescription(activeCategory, lang) && (
+                    <p className="text-gray-600 text-sm leading-relaxed mb-5">
+                      {localizedDescription(activeCategory, lang)}
+                    </p>
+                  )}
                   <button
                     className="flex items-center text-blue-500 hover:text-blue-600 text-sm font-medium transition-colors"
                     onClick={() => goToCategory(activeCategory.id)}
                   >
-                    了解更多
+                    {copy.homeLearnMore}
                     <ChevronRight className="w-4 h-4 ml-1" />
                   </button>
                 </div>
@@ -165,14 +175,14 @@ export default function HomeContent({
                   }}
                 >
                   <div className="text-base font-semibold text-gray-800 py-4 px-5 text-center">
-                    {category.name}
+                    {localizedName(category, lang)}
                   </div>
                   <div className="overflow-hidden flex items-center justify-center bg-gray-50 p-4">
                     {category.coverImageUrl && (
                       <div className="relative w-full h-[160px] lg:h-[200px]">
                         <Image
                           src={category.coverImageUrl}
-                          alt={category.name}
+                          alt={localizedName(category, lang)}
                           fill
                           sizes="(min-width: 1400px) 380px, (min-width: 1024px) 30vw, (min-width: 640px) 50vw, calc(100vw - 4rem)"
                           className="object-contain transition-transform duration-300 group-hover:scale-105"

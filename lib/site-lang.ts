@@ -17,3 +17,53 @@ export function introductionVersion(lang: SiteLang): number {
 export function writeSiteLang(lang: SiteLang) {
   document.cookie = `${SITE_LANG_COOKIE}=${lang}; Path=/; Max-Age=31536000; SameSite=Lax`;
 }
+
+export function htmlLangAttr(lang: SiteLang): string {
+  return lang === "en" ? "en" : "zh-CN";
+}
+
+export interface LocalizableFields {
+  name: string;
+  englishName: string;
+  description?: string | null;
+  englishDescription?: string | null;
+}
+
+/** 按语言取展示名称，英文缺失时回退中文名 */
+export function localizedName(
+  entity: LocalizableFields,
+  lang: SiteLang
+): string {
+  if (lang === "en") {
+    const en = entity.englishName?.trim();
+    if (en) return en;
+  }
+  return entity.name;
+}
+
+/** 按语言取描述，英文缺失时不回退中文 */
+export function localizedDescription(
+  entity: LocalizableFields,
+  lang: SiteLang
+): string | null {
+  if (lang === "en") {
+    return entity.englishDescription?.trim() || null;
+  }
+  return entity.description?.trim() || null;
+}
+
+export interface GoodsIntroFields {
+  introduction?: string | null;
+  englishIntroduction?: string | null;
+}
+
+/** 按语言取商品详情富文本 */
+export function localizedGoodsIntroduction(
+  entity: GoodsIntroFields,
+  lang: SiteLang
+): string | null {
+  if (lang === "en") {
+    return entity.englishIntroduction?.trim() || null;
+  }
+  return entity.introduction?.trim() || null;
+}

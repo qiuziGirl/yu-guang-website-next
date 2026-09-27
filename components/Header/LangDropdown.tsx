@@ -3,7 +3,8 @@
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
-import { parseSiteLang, SITE_LANG_COOKIE, writeSiteLang, type SiteLang } from "@/lib/site-lang";
+import { writeSiteLang, type SiteLang } from "@/lib/site-lang";
+import { notifySiteLangChange, useSiteLang } from "@/lib/use-site-lang";
 
 const OPTIONS: { value: SiteLang; label: string }[] = [
   { value: "zh", label: "中文" },
@@ -11,24 +12,6 @@ const OPTIONS: { value: SiteLang; label: string }[] = [
 ];
 
 const HOVER_QUERY = "(hover: hover) and (pointer: fine)";
-
-const langListeners = new Set<() => void>();
-
-function subscribeLang(onStoreChange: () => void) {
-  langListeners.add(onStoreChange);
-  return () => {
-    langListeners.delete(onStoreChange);
-  };
-}
-
-function readLangSnapshot(): SiteLang {
-  const matched = document.cookie.match(new RegExp(`(?:^|; )${SITE_LANG_COOKIE}=([^;]*)`));
-  return parseSiteLang(matched?.[1]);
-}
-
-function notifyLangChange() {
-  langListeners.forEach((listener) => listener());
-}
 
 function subscribeHover(onStoreChange: () => void) {
   const media = window.matchMedia(HOVER_QUERY);
@@ -43,13 +26,13 @@ function getHoverSnapshot() {
 export default function LangDropdown() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const lang = useSyncExternalStore(subscribeLang, readLangSnapshot, () => "zh" as SiteLang);
+  const lang = useSiteLang();
   const canHover = useSyncExternalStore(subscribeHover, getHoverSnapshot, () => true);
   const current = OPTIONS.find((item) => item.value === lang) ?? OPTIONS[0];
 
   const selectLang = (next: SiteLang) => {
     writeSiteLang(next);
-    notifyLangChange();
+    notifySiteLangChange();
     setOpen(false);
     router.refresh();
   };

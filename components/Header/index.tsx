@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Menu, X } from "lucide-react";
+import { uiCopy } from "@/lib/i18n/ui";
+import { localizedName } from "@/lib/site-lang";
+import { useSiteLang } from "@/lib/use-site-lang";
 import type { CategoryInfo } from "@/types/api";
 import LangDropdown from "./LangDropdown";
 
@@ -38,6 +41,8 @@ function getFocusable(root: HTMLElement) {
 }
 
 export default function HeaderComponent({ categories }: HeaderProps) {
+  const lang = useSiteLang();
+  const copy = uiCopy(lang);
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [shown, setShown] = useState(false);
@@ -170,7 +175,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
           className="text-gray-700 hover:text-green-500 transition-colors duration-300"
           onClick={close}
         >
-          {category.name}
+          {localizedName(category, lang)}
         </Link>
       ))}
       <Link
@@ -178,7 +183,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
         className="text-gray-700 hover:text-green-500 transition-colors duration-300"
         onClick={close}
       >
-        关于余光
+        {copy.navAbout}
       </Link>
     </>
   );
@@ -195,10 +200,10 @@ export default function HeaderComponent({ categories }: HeaderProps) {
           width={48}
           height={48}
           className="mr-2.5 w-10 h-10 lg:w-12 lg:h-12"
-          alt="余光照明"
+          alt={copy.brandName}
           priority
         />
-        余光照明
+        {copy.brandName}
       </Link>
 
       <nav className="hidden lg:flex items-center gap-14 text-xl font-semibold">
@@ -212,7 +217,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
         className={`lg:hidden inline-flex items-center justify-center p-2 text-gray-700 hover:text-green-500${mounted ? " relative z-70" : ""}`}
         aria-expanded={open}
         aria-controls="mobile-nav-drawer"
-        aria-label={open ? "关闭菜单" : "打开菜单"}
+        aria-label={open ? copy.menuClose : copy.menuOpen}
         onClick={() => (open ? close() : openMenu())}
       >
         {open ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
@@ -227,7 +232,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
             type="button"
             tabIndex={-1}
             className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${shown ? "opacity-100" : "opacity-0"}`}
-            aria-label="关闭菜单遮罩"
+            aria-label={copy.menuOverlay}
             onClick={close}
           />
           <aside
@@ -235,7 +240,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
             id="mobile-nav-drawer"
             role="dialog"
             aria-modal="true"
-            aria-label="菜单"
+            aria-label={copy.menuDialog}
             tabIndex={-1}
             className={`absolute right-0 top-0 h-full w-[min(72vw,280px)] bg-white shadow-xl flex flex-col p-6 gap-1 text-lg font-semibold transition-transform duration-300 ${shown ? "translate-x-0" : "translate-x-full"}`}
           >
@@ -247,7 +252,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
                   className="py-3 text-gray-700 hover:text-green-500 border-b border-gray-100"
                   onClick={close}
                 >
-                  {category.name}
+                  {localizedName(category, lang)}
                 </Link>
               ))}
               <Link
@@ -255,7 +260,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
                 className="py-3 text-gray-700 hover:text-green-500 border-b border-gray-100"
                 onClick={close}
               >
-                关于余光
+                {copy.navAbout}
               </Link>
             </div>
             {!isDesktop && (

@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
+import { uiCopy } from "@/lib/i18n/ui";
+import { useSiteLang } from "@/lib/use-site-lang";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 
@@ -186,11 +188,13 @@ function TooltipIcon({ icon, imageUrl, alt }: TooltipIconProps) {
 
 export default function FooterComponent() {
   const router = useRouter();
+  const lang = useSiteLang();
+  const copy = uiCopy(lang);
 
   return (
     <div className="px-4">
       <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-4">
-        <span className="text-base">Contact US</span>
+        <span className="text-base">{copy.footerContact}</span>
 
         <TooltipIcon
           icon={
@@ -249,10 +253,10 @@ export default function FooterComponent() {
           className="pl-1 cursor-pointer hover:underline"
           onClick={() => router.push("/privacy-policy")}
         >
-          Privacy Policy
+          {copy.footerPrivacy}
         </span>
         <a
-          className="pl-1 hover:underline"
+          className="block sm:inline sm:pl-1 hover:underline whitespace-nowrap"
           href="https://beian.miit.gov.cn/"
           target="_blank"
           rel="noopener noreferrer"

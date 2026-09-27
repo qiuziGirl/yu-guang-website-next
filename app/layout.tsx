@@ -6,6 +6,8 @@ import {
   defaultTitle,
   siteUrl,
 } from "@/lib/site";
+import { htmlLangAttr } from "@/lib/site-lang";
+import { readSiteLang } from "@/lib/site-lang-server";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -32,13 +34,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = await readSiteLang();
+
   return (
-    <html lang="zh-CN">
+    <html lang={htmlLangAttr(lang)}>
       <body>
         <MainLayout>{children}</MainLayout>
       </body>

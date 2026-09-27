@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { getGoodsById } from "@/lib/data";
+import { uiCopy } from "@/lib/i18n/ui";
 import { defaultOgImage } from "@/lib/site";
+import {
+  localizedDescription,
+  localizedName,
+} from "@/lib/site-lang";
+import { readSiteLang } from "@/lib/site-lang-server";
 import { notFound } from "next/navigation";
 import GoodsDetail from "./GoodsDetail";
 
@@ -11,6 +17,8 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
+  const lang = await readSiteLang();
+  const copy = uiCopy(lang);
   const { goodsId } = await params;
   const id = Number(goodsId);
   if (!Number.isInteger(id) || id <= 0) {
@@ -20,25 +28,29 @@ export async function generateMetadata({
   if (!goods) {
     notFound();
   }
+  const title = localizedName(goods, lang);
   const description =
-    goods.description?.trim() || `${goods.name} - 余光照明`;
+    localizedDescription(goods, lang) ||
+    `${title} - ${copy.goodsMetaFallback}`;
   const firstImage =
     goods.imageListUrl
       ?.split(",")
       .map((u) => u.trim())
       .find(Boolean) || defaultOgImage;
   return {
-    title: goods.name,
+    title,
     description,
     openGraph: {
-      title: goods.name,
+      title,
       description,
       images: [{ url: firstImage }],
+      locale: lang === "en" ? "en_US" : "zh_CN",
     },
   };
 }
 
 export default async function GoodsPage({ params }: PageProps) {
+  const lang = await readSiteLang();
   const { goodsId } = await params;
   const id = Number(goodsId);
   if (!Number.isInteger(id) || id <= 0) {
@@ -55,5 +67,7 @@ export default async function GoodsPage({ params }: PageProps) {
       ? goods.imageListUrl.split(",").filter((url) => url.trim())
       : [];
 
-  return <GoodsDetail goods={goods} imageUrlList={imageUrlList} />;
+  return (
+    <GoodsDetail goods={goods} imageUrlList={imageUrlList} initialLang={lang} />
+  );
 }

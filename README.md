@@ -37,7 +37,8 @@ pnpm run lint    # ESLint 检查
 
 - 页面 metadata / Open Graph
 - `/sitemap.xml`、`/robots.txt`
-- 关于页富文本消毒；顶栏语言只切换关于页：中文与英文各读取一条已开启的介绍；英文页 metadata 使用英文描述
+- 全站中英切换（cookie `site-lang`）：导航、首页、分类、商品、关于、隐私政策与 metadata 随语言变化；商品页单语展示
+- 关于页富文本消毒；中文与英文各读取一条已开启的介绍
 - `/api/v1/introduction?version=0|1` 非法 version 返回 400
 - 商品/分类缺失返回 404
 - 导航与列表读路径约 5 分钟缓存；管理端保存分类/商品/轮播/简介后通过 `POST /api/revalidate` 即时失效对应 tag

@@ -1,56 +1,37 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 import { getIntroduction } from "@/lib/data";
+import { uiCopy } from "@/lib/i18n/ui";
 import { sanitizeHtml } from "@/lib/sanitize-html";
 import {
   defaultDescription,
   defaultDescriptionEn,
   defaultOgImage,
 } from "@/lib/site";
-import {
-  introductionVersion,
-  parseSiteLang,
-  SITE_LANG_COOKIE,
-} from "@/lib/site-lang";
-
-const ABOUT_COPY = {
-  zh: {
-    title: "关于余光",
-    empty: "暂无介绍",
-    description: defaultDescription,
-  },
-  en: {
-    title: "About",
-    empty: "No introduction yet",
-    description: defaultDescriptionEn,
-  },
-} as const;
-
-async function readAboutLang() {
-  const store = await cookies();
-  return parseSiteLang(store.get(SITE_LANG_COOKIE)?.value);
-}
+import { introductionVersion } from "@/lib/site-lang";
+import { readSiteLang } from "@/lib/site-lang-server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const lang = await readAboutLang();
-  const copy = ABOUT_COPY[lang];
+  const lang = await readSiteLang();
+  const copy = uiCopy(lang);
+  const description = lang === "en" ? defaultDescriptionEn : defaultDescription;
 
   return {
-    title: copy.title,
-    description: copy.description,
+    title: copy.aboutTitle,
+    description,
     openGraph: {
-      title: copy.title,
-      description: copy.description,
+      title: copy.aboutTitle,
+      description,
       images: [{ url: defaultOgImage }],
+      locale: lang === "en" ? "en_US" : "zh_CN",
     },
   };
 }
 
 export default async function AboutPage() {
-  const lang = await readAboutLang();
+  const lang = await readSiteLang();
+  const copy = uiCopy(lang);
   const introduction = await getIntroduction(introductionVersion(lang));
   const richText = sanitizeHtml(introduction?.richText ?? "");
-  const copy = ABOUT_COPY[lang];
 
   return (
     <section className="min-h-[calc(100vh-200px)] px-4 md:px-10 lg:px-24 py-8 md:py-10 bg-white">
@@ -65,7 +46,7 @@ export default async function AboutPage() {
             [&_p]:mb-4"
         />
       ) : (
-        <p className="max-w-[1200px] mx-auto text-gray-500">{copy.empty}</p>
+        <p className="max-w-[1200px] mx-auto text-gray-500">{copy.aboutEmpty}</p>
       )}
     </section>
   );

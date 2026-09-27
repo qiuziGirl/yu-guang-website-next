@@ -1,5 +1,13 @@
 "use client";
 
+import { uiCopy } from "@/lib/i18n/ui";
+import {
+  localizedDescription,
+  localizedGoodsIntroduction,
+  localizedName,
+  type SiteLang,
+} from "@/lib/site-lang";
+import { useSiteLang } from "@/lib/use-site-lang";
 import { GoodsInfo } from "@/types/api";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -12,6 +20,7 @@ const EMPTY_IMAGE_URL =
 interface GoodsDetailProps {
   goods: GoodsInfo;
   imageUrlList: string[];
+  initialLang: SiteLang;
 }
 
 function ImagePreview({
@@ -20,12 +29,14 @@ function ImagePreview({
   onClose,
   onPrev,
   onNext,
+  previewAlt,
 }: {
   images: string[];
   currentIndex: number;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
+  previewAlt: string;
 }) {
   return (
     <div
@@ -68,7 +79,7 @@ function ImagePreview({
       >
         <Image
           src={images[currentIndex]}
-          alt="预览图"
+          alt={previewAlt}
           fill
           sizes="90vw"
           className="object-contain"
@@ -83,19 +94,53 @@ function ImagePreview({
   );
 }
 
-export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
+export default function GoodsDetail({
+  goods,
+  imageUrlList,
+  initialLang,
+}: GoodsDetailProps) {
+  const clientLang = useSiteLang();
+  const lang = clientLang || initialLang;
+  const copy = uiCopy(lang);
+  const displayName = localizedName(goods, lang);
+  const displayDescription = localizedDescription(goods, lang);
+  const displayIntroduction = localizedGoodsIntroduction(goods, lang);
+
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewIndex, setPreviewIndex] = useState(0);
 
   const sanitizedIntroduction = useMemo(() => {
-    if (typeof window !== "undefined" && goods.introduction) {
-      return DOMPurify.sanitize(goods.introduction, {
-        ALLOWED_TAGS: ["img", "p", "br", "strong", "em", "u", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li", "a", "table", "thead", "tbody", "tr", "th", "td"],
+    if (typeof window !== "undefined" && displayIntroduction) {
+      return DOMPurify.sanitize(displayIntroduction, {
+        ALLOWED_TAGS: [
+          "img",
+          "p",
+          "br",
+          "strong",
+          "em",
+          "u",
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+          "h6",
+          "ul",
+          "ol",
+          "li",
+          "a",
+          "table",
+          "thead",
+          "tbody",
+          "tr",
+          "th",
+          "td",
+        ],
         ALLOWED_ATTR: ["src", "alt", "title", "href", "target", "class"],
       });
     }
-    return goods.introduction || "";
-  }, [goods.introduction]);
+    return displayIntroduction || "";
+  }, [displayIntroduction]);
 
   const openPreview = (index: number) => {
     setPreviewIndex(index);
@@ -112,11 +157,11 @@ export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
     setPreviewIndex((prev) => (prev + 1) % imageUrlList.length);
   };
 
-  const mainImage = imageUrlList.length === 0 ? EMPTY_IMAGE_URL : imageUrlList[0];
+  const mainImage =
+    imageUrlList.length === 0 ? EMPTY_IMAGE_URL : imageUrlList[0];
 
   return (
     <section className="flex flex-col bg-gray-100 min-h-[calc(100vh-200px)]">
-      {/* 商品信息头部 */}
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 px-4 md:px-10 lg:px-24 py-8 lg:py-12 bg-white mb-6 lg:mb-8 text-left">
         <div className="w-full lg:w-1/3">
           <div
@@ -125,7 +170,7 @@ export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
           >
             <Image
               src={mainImage}
-              alt={goods.name}
+              alt={displayName}
               fill
               sizes="(min-width: 1024px) 33vw, 100vw"
               className="object-contain rounded-lg"
@@ -147,7 +192,7 @@ export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
                 >
                   <Image
                     src={url}
-                    alt={`${goods.name} ${index + 1}`}
+                    alt={`${displayName} ${index + 1}`}
                     fill
                     sizes="64px"
                     className="object-cover"
@@ -159,33 +204,30 @@ export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
         </div>
         <div className="flex-1">
           <h1 className="text-2xl lg:text-3xl font-semibold text-gray-800 mb-3 leading-tight">
-            {goods.name}
+            {displayName}
           </h1>
-          <h2 className="text-lg lg:text-xl text-gray-500 font-medium mb-4 lg:mb-6">
-            {goods.englishName}
-          </h2>
-          {goods.description && (
+          {displayDescription && (
             <p className="text-gray-600 text-base leading-relaxed mt-5">
-              {goods.description}
-            </p>
-          )}
-          {goods.englishDescription && (
-            <p className="text-gray-500 text-[15px] leading-relaxed mt-3">
-              {goods.englishDescription}
+              {displayDescription}
             </p>
           )}
         </div>
       </div>
 
-      {/* 商品详情介绍 */}
-      {goods.introduction && (
+      {sanitizedIntroduction ? (
         <div
           dangerouslySetInnerHTML={{ __html: sanitizedIntroduction }}
           className="flex-1 px-4 md:px-10 lg:px-24 pb-8 lg:pb-12 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-lg [&_img]:mx-auto"
         />
+      ) : (
+        lang === "en" &&
+        goods.introduction?.trim() && (
+          <p className="px-4 md:px-10 lg:px-24 pb-8 lg:pb-12 text-gray-500 text-sm">
+            {copy.goodsIntroMissing}
+          </p>
+        )
       )}
 
-      {/* 图片预览弹窗 */}
       {previewOpen && (
         <ImagePreview
           images={imageUrlList}
@@ -193,6 +235,7 @@ export default function GoodsDetail({ goods, imageUrlList }: GoodsDetailProps) {
           onClose={() => setPreviewOpen(false)}
           onPrev={handlePrev}
           onNext={handleNext}
+          previewAlt={copy.goodsPreviewAlt}
         />
       )}
     </section>

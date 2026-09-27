@@ -22,6 +22,7 @@ export interface GoodsInfo {
   price: string | null;
   categoryId: number;
   introduction: string | null;
+  englishIntroduction: string | null;
   status: number | null;
   createdAt: string | null;
   updatedAt: string | null;

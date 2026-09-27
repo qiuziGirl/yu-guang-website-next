@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { getCategoryById, getGoodsByCategoryId } from "@/lib/data";
+import { uiCopy } from "@/lib/i18n/ui";
 import { defaultOgImage } from "@/lib/site";
+import {
+  localizedDescription,
+  localizedName,
+} from "@/lib/site-lang";
+import { readSiteLang } from "@/lib/site-lang-server";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,6 +21,8 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
+  const lang = await readSiteLang();
+  const copy = uiCopy(lang);
   const { categoryId } = await params;
   const id = Number(categoryId);
   if (!Number.isInteger(id) || id <= 0) {
@@ -24,21 +32,26 @@ export async function generateMetadata({
   if (!category) {
     notFound();
   }
+  const title = localizedName(category, lang);
   const description =
-    category.description?.trim() || `${category.name} - 余光照明产品分类`;
+    localizedDescription(category, lang) ||
+    `${title} - ${copy.categoryMetaFallback}`;
   const image = category.coverImageUrl || defaultOgImage;
   return {
-    title: category.name,
+    title,
     description,
     openGraph: {
-      title: category.name,
+      title,
       description,
       images: [{ url: image }],
+      locale: lang === "en" ? "en_US" : "zh_CN",
     },
   };
 }
 
 export default async function CategoryPage({ params }: PageProps) {
+  const lang = await readSiteLang();
+  const copy = uiCopy(lang);
   const { categoryId } = await params;
   const id = Number(categoryId);
   if (!Number.isInteger(id) || id <= 0) {
@@ -56,8 +69,8 @@ export default async function CategoryPage({ params }: PageProps) {
     <section className="flex justify-center px-4 md:px-10 lg:px-24 py-6 md:py-10 bg-gray-100 min-h-[calc(100vh-200px)]">
       {goodsList.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[400px]">
-          <div className="text-gray-400 text-lg mb-4">该分类暂无商品</div>
-          <div className="text-gray-300 text-sm">敬请期待更多内容</div>
+          <div className="text-gray-400 text-lg mb-4">{copy.categoryEmpty}</div>
+          <div className="text-gray-300 text-sm">{copy.categoryEmptyHint}</div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-[1400px] w-full">
@@ -66,6 +79,7 @@ export default async function CategoryPage({ params }: PageProps) {
               goods.imageListUrl && goods.imageListUrl.trim()
                 ? goods.imageListUrl.split(",")[0]
                 : EMPTY_IMAGE_URL;
+            const displayName = localizedName(goods, lang);
             return (
               <Link
                 key={goods.id}
@@ -75,7 +89,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 <div className="relative w-full h-[200px] md:h-[240px] lg:h-[280px] overflow-hidden bg-gray-50">
                   <Image
                     src={imageUrl}
-                    alt={goods.name}
+                    alt={displayName}
                     fill
                     sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -83,11 +97,13 @@ export default async function CategoryPage({ params }: PageProps) {
                 </div>
                 <div className="p-4 md:p-6 text-left">
                   <div className="text-gray-800 font-semibold text-lg mb-2 leading-snug">
-                    {goods.name}
+                    {displayName}
                   </div>
-                  <div className="text-gray-500 text-sm leading-relaxed">
-                    {goods.englishName}
-                  </div>
+                  {localizedDescription(goods, lang) && (
+                    <div className="text-gray-500 text-sm leading-relaxed">
+                      {localizedDescription(goods, lang)}
+                    </div>
+                  )}
                 </div>
               </Link>
             );
