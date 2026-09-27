@@ -1,6 +1,7 @@
 "use client";
 
 import { uiCopy } from "@/lib/i18n/ui";
+import { localizedPath } from "@/lib/locale-path";
 import { localizedDescription, localizedName } from "@/lib/site-lang";
 import { useSiteLang } from "@/lib/use-site-lang";
 import { CategoryInfo, CarouselInfo } from "@/types/api";
@@ -79,7 +80,7 @@ export default function HomeContent({
   }, []);
 
   const goToCategory = (categoryId: number) => {
-    router.push(`/category/${categoryId}`);
+    router.push(localizedPath(`/category/${categoryId}`, lang));
   };
 
   return (

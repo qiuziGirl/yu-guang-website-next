@@ -7,8 +7,10 @@ import {
   defaultDescriptionEn,
   defaultOgImage,
 } from "@/lib/site";
+import { pageUrl } from "@/lib/locale-path";
 import { introductionVersion } from "@/lib/site-lang";
 import { readSiteLang } from "@/lib/site-lang-server";
+import { buildPageAlternates } from "@/lib/seo/alternates";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await readSiteLang();
@@ -18,9 +20,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: copy.aboutTitle,
     description,
+    alternates: buildPageAlternates("/about", lang),
     openGraph: {
       title: copy.aboutTitle,
       description,
+      url: pageUrl("/about", lang),
       images: [{ url: defaultOgImage }],
       locale: lang === "en" ? "en_US" : "zh_CN",
     },

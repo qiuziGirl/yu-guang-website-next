@@ -6,7 +6,9 @@ import {
   localizedDescription,
   localizedName,
 } from "@/lib/site-lang";
+import { localizedPath, pageUrl } from "@/lib/locale-path";
 import { readSiteLang } from "@/lib/site-lang-server";
+import { buildPageAlternates } from "@/lib/seo/alternates";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -37,12 +39,15 @@ export async function generateMetadata({
     localizedDescription(category, lang) ||
     `${title} - ${copy.categoryMetaFallback}`;
   const image = category.coverImageUrl || defaultOgImage;
+  const internalPath = `/category/${id}`;
   return {
     title,
     description,
+    alternates: buildPageAlternates(internalPath, lang),
     openGraph: {
       title,
       description,
+      url: pageUrl(internalPath, lang),
       images: [{ url: image }],
       locale: lang === "en" ? "en_US" : "zh_CN",
     },
@@ -83,7 +88,7 @@ export default async function CategoryPage({ params }: PageProps) {
             return (
               <Link
                 key={goods.id}
-                href={`/goods/${goods.id}`}
+                href={localizedPath(`/goods/${goods.id}`, lang)}
                 className="bg-white rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group"
               >
                 <div className="relative w-full h-[200px] md:h-[240px] lg:h-[280px] overflow-hidden bg-gray-50">

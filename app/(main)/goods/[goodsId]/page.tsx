@@ -6,7 +6,9 @@ import {
   localizedDescription,
   localizedName,
 } from "@/lib/site-lang";
+import { pageUrl } from "@/lib/locale-path";
 import { readSiteLang } from "@/lib/site-lang-server";
+import { buildPageAlternates } from "@/lib/seo/alternates";
 import { notFound } from "next/navigation";
 import GoodsDetail from "./GoodsDetail";
 
@@ -37,12 +39,15 @@ export async function generateMetadata({
       ?.split(",")
       .map((u) => u.trim())
       .find(Boolean) || defaultOgImage;
+  const internalPath = `/goods/${id}`;
   return {
     title,
     description,
+    alternates: buildPageAlternates(internalPath, lang),
     openGraph: {
       title,
       description,
+      url: pageUrl(internalPath, lang),
       images: [{ url: firstImage }],
       locale: lang === "en" ? "en_US" : "zh_CN",
     },

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Menu, X } from "lucide-react";
 import { uiCopy } from "@/lib/i18n/ui";
+import { localizedPath } from "@/lib/locale-path";
 import { localizedName } from "@/lib/site-lang";
 import { useSiteLang } from "@/lib/use-site-lang";
 import type { CategoryInfo } from "@/types/api";
@@ -171,7 +172,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
       {categories.map((category) => (
         <Link
           key={category.id}
-          href={`/category/${category.id}`}
+          href={localizedPath(`/category/${category.id}`, lang)}
           className="text-gray-700 hover:text-green-500 transition-colors duration-300"
           onClick={close}
         >
@@ -179,7 +180,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
         </Link>
       ))}
       <Link
-        href="/about"
+        href={localizedPath("/about", lang)}
         className="text-gray-700 hover:text-green-500 transition-colors duration-300"
         onClick={close}
       >
@@ -191,7 +192,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
   return (
     <>
       <Link
-        href="/"
+        href={localizedPath("/", lang)}
         className="flex items-center text-xl lg:text-2xl font-semibold text-green-500"
         onClick={close}
       >
@@ -248,7 +249,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
               {categories.map((category) => (
                 <Link
                   key={category.id}
-                  href={`/category/${category.id}`}
+                  href={localizedPath(`/category/${category.id}`, lang)}
                   className="py-3 text-gray-700 hover:text-green-500 border-b border-gray-100"
                   onClick={close}
                 >
@@ -256,7 +257,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
                 </Link>
               ))}
               <Link
-                href="/about"
+                href={localizedPath("/about", lang)}
                 className="py-3 text-gray-700 hover:text-green-500 border-b border-gray-100"
                 onClick={close}
               >
@@ -265,7 +266,7 @@ export default function HeaderComponent({ categories }: HeaderProps) {
             </div>
             {!isDesktop && (
               <div className="mt-6">
-                <LangDropdown />
+                <LangDropdown onSelected={close} />
               </div>
             )}
           </aside>

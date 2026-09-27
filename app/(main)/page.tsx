@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getCarousels, getCategoriesForHome } from "@/lib/data";
 import { uiCopy } from "@/lib/i18n/ui";
+import { pageUrl } from "@/lib/locale-path";
 import {
   defaultDescription,
   defaultDescriptionEn,
   defaultOgImage,
-  defaultTitle,
 } from "@/lib/site";
 import { readSiteLang } from "@/lib/site-lang-server";
+import { buildPageAlternates } from "@/lib/seo/alternates";
 import HomeContent from "./HomeContent";
 import HomeLoading from "./HomeLoading";
 
@@ -20,9 +21,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { absolute: copy.brandName },
     description,
+    alternates: buildPageAlternates("/", lang),
     openGraph: {
       title: copy.brandName,
       description,
+      url: pageUrl("/", lang),
       images: [{ url: defaultOgImage }],
       locale: lang === "en" ? "en_US" : "zh_CN",
     },

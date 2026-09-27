@@ -37,7 +37,7 @@ pnpm run lint    # ESLint 检查
 
 - 页面 metadata / Open Graph
 - `/sitemap.xml`、`/robots.txt`
-- 全站中英切换（cookie `site-lang`）：导航、首页、分类、商品、关于、隐私政策与 metadata 随语言变化；商品页单语展示
+- 全站中英切换：中文 URL 不变（`/`、`/about`…），英文使用 `/en` 前缀；hreflang + sitemap alternates；商品页单语展示
 - 关于页富文本消毒；中文与英文各读取一条已开启的介绍
 - `/api/v1/introduction?version=0|1` 非法 version 返回 400
 - 商品/分类缺失返回 404

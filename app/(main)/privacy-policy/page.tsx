@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { privacyContent } from "@/lib/i18n/privacy-content";
 import { uiCopy } from "@/lib/i18n/ui";
+import { pageUrl } from "@/lib/locale-path";
 import { readSiteLang } from "@/lib/site-lang-server";
+import { buildPageAlternates } from "@/lib/seo/alternates";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await readSiteLang();
@@ -10,9 +12,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: copy.privacyTitle,
     description: copy.privacyDescription,
+    alternates: buildPageAlternates("/privacy-policy", lang),
     openGraph: {
       title: copy.privacyTitle,
       description: copy.privacyDescription,
+      url: pageUrl("/privacy-policy", lang),
       locale: lang === "en" ? "en_US" : "zh_CN",
     },
   };

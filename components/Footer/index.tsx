@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExter
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { uiCopy } from "@/lib/i18n/ui";
+import { localizedPath } from "@/lib/locale-path";
 import { useSiteLang } from "@/lib/use-site-lang";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
@@ -251,7 +252,7 @@ export default function FooterComponent() {
         Copyright {dayjs().format("YYYY")}© Yuguang Enterprises.
         <span
           className="pl-1 cursor-pointer hover:underline"
-          onClick={() => router.push("/privacy-policy")}
+          onClick={() => router.push(localizedPath("/privacy-policy", lang))}
         >
           {copy.footerPrivacy}
         </span>

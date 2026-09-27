@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 
+import { detectLocaleFromPath } from "@/lib/locale-path";
 import { parseSiteLang, SITE_LANG_COOKIE, type SiteLang } from "@/lib/site-lang";
 
 const langListeners = new Set<() => void>();
@@ -14,6 +15,10 @@ export function subscribeSiteLang(onStoreChange: () => void) {
 }
 
 export function readSiteLangSnapshot(): SiteLang {
+  const fromPath = detectLocaleFromPath(window.location.pathname);
+  if (fromPath === "en") {
+    return "en";
+  }
   const matched = document.cookie.match(
     new RegExp(`(?:^|; )${SITE_LANG_COOKIE}=([^;]*)`)
   );
