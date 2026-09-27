@@ -10,6 +10,7 @@
 |------|------|
 | `DATABASE_URL` | MySQL 连接串（Prisma 使用） |
 | `NEXT_PUBLIC_SITE_URL` | 站点绝对根 URL，无尾斜杠；缺省 `https://yuguanglighting.cn` |
+| `REVALIDATE_SECRET` | 按需刷新缓存密钥；管理端写操作后由 Egg 服务调用 `POST /api/revalidate` |
 
 本地开发可复制 `.env.example`（如有）或自行配置；**请勿将 `.env` 提交到版本库**。`NEXT_PUBLIC_SITE_URL` 用于 sitemap、Open Graph 等绝对链接生成，生产环境建议显式配置。
 
@@ -39,7 +40,8 @@ pnpm run lint    # ESLint 检查
 - 关于页富文本消毒；顶栏语言只切换关于页：中文与英文各读取一条已开启的介绍；英文页 metadata 使用英文描述
 - `/api/v1/introduction?version=0|1` 非法 version 返回 400
 - 商品/分类缺失返回 404
-- 导航与列表读路径约 5 分钟缓存；首页仅加载分类封面数据
+- 导航与列表读路径约 5 分钟缓存；管理端保存分类/商品/轮播/简介后通过 `POST /api/revalidate` 即时失效对应 tag
+- 首页仅加载分类封面数据
 - 全站响应式布局：`lg` 以下右侧抽屉导航，首页/分类/商品/关于/隐私适配手机与平板
 
 ## 技术栈
